@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>製造部売上管理システム</title>
+<link rel="stylesheet" href="/css/sb-salesmanagement.css">
+</head>
+<body>
+	<h1>製造部売上管理システム：案件一覧</h1>
+	<div>
+		<button class="add"
+			onclick="location.href='/salesmanagement/add_order'">新規登録</button>
+	</div>
+	<table class="table-order-list">
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>顧客</th>
+				<th class="th-address">受注日</th>
+				<th>S番号</th>
+				<th>件名</th>
+				<th>数量</th>
+				<th>納入指定日<br>／納入日</th>
+				<th>請求日</th>
+				<th>見積金額<br>／受注金額</th>
+				<th>ステータス</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="order : ${orderList}" th:object="${order}">
+				<td class="center" th:text="*{orderId}"></td>
+				<td th:text="*{customer.customerName}"></td>
+				<!--/* 「受注日」 表示 */-->
+				<td th:text="*{orderDate}"></td>
+				<td th:text="'S-' + *{orderSNumber}"></td>
+				<td th:text="*{orderName}"></td>
+				<!--/* 「数量」 + 「単位」 表示 */-->
+				<td
+					th:text="*{orderDetail.detailQuantity} + *{orderDetail.detailUnitName}"></td>
+				<!--/* 「納入指定日」「納入日」 表示 */-->
+				<td>
+					<p th:text="*{orderDetail.detailDeliverySpecifiedDate}"></p>
+					<p th:text="*{orderDetail.detailDeliveryDate}"></p>
+				</td>
+				<!--/* 「請求日」 表示 */ -->
+				<td th:text="*{orderDetail.detailBillingDate}"></td>
+				<!--/* 「見積金額」「受注金額」 表示  */-->
+				<td>
+					<p th:text="*{orderDetail.detailQuotePrice}"></p>
+					<p th:text="*{orderDetail.detailOrderPrice}"></p>
+				</td>
+				<td th:text="*{status.statusName}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
