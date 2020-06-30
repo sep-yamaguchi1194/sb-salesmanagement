@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+  <div th:fragment="selectdiv" id="selectcategory">
+    <select id="singleSelectAjax" name="selectedItemAjax">
+      <option value="">---</option>
+      <option id="ajaxOption" th:each="status : ${statusList}"
+        th:value="${status.statusId}" th:text="${status.statusName}">singleSelect</option>
+    </select>
+  </div>
+
+</body>
+</html>
