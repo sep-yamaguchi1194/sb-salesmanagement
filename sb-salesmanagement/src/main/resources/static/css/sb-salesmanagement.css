@@ -21,3 +21,22 @@ table th {
 	table-layout: fixed;
 	width: 100%;
 }
+
+.table-form {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.form-title {
+	width: 20%;
+}
+
+.form-required {
+	width: 5%;
+}
+
+.back {
+	margin-left: 20px;
+}

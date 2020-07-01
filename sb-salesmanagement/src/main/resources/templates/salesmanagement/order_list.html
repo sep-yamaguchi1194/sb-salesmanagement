@@ -10,12 +10,12 @@
   <h1>製造部売上管理システム：案件一覧</h1>
   <div>
     <button class="add"
-      onclick="location.href='/salesmanagement/add_order'">新規登録</button>
+      onclick="location.href='/salesmanagement/order_add'">新規登録</button>
   </div>
   <div>
     <form th:action="@{/salesmanagement/order_list}" th:method="get">
       <select id="customerid" name="customerid">
-        <option value="">---</option>
+        <option value="0">---</option>
         <option th:each="customer : ${customerList}"
           th:value="${customer.customerId}"
           th:text="${customer.customerName}"></option>

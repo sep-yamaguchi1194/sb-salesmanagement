@@ -10,9 +10,16 @@
     <select id="singleSelectAjax" name="selectedItemAjax">
       <option value="">---</option>
       <option id="ajaxOption" th:each="status : ${statusList}"
-        th:value="${status.statusId}" th:text="${status.statusName}">singleSelect</option>
+        th:value="${status.statusId}" th:text="${status.statusName}">childselectbox</option>
     </select>
   </div>
 
+  <div th:fragment="odr_add_selectdiv" id="selectcategory">
+    <select id="statusId" name="statusId">
+      <option value="">---</option>
+      <option id="ajaxOption" th:each="status : ${statusList}"
+        th:value="${status.statusId}" th:text="${status.statusName}">childselectbox</option>
+    </select>
+  </div>
 </body>
 </html>
