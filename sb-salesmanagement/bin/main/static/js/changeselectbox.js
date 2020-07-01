@@ -15,9 +15,6 @@ $(function() {
       },
       success: function(data, status, xhr) {
         $(".div_for_embeded").html(data);
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        alert("error");
       }
     });
   });
