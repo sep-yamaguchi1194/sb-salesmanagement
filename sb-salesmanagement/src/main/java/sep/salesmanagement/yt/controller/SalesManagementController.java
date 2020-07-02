@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,9 +50,9 @@ public class SalesManagementController {
 
     @GetMapping(value = "/salesmanagement/order_add")
     public String displayOrderAdd(Model model) {
-    	//新規案件登録用フォーム
-    	OrderAddForm orderAddForm = new OrderAddForm();
-    	model.addAttribute("orderAddForm", orderAddForm);
+        //新規案件登録用フォーム
+        OrderAddForm orderAddForm = new OrderAddForm();
+        model.addAttribute("orderAddForm", orderAddForm);
 
         List<Customer> customerList = salesManagementService.showCustomer();
         model.addAttribute("customerList", customerList);
@@ -65,11 +66,17 @@ public class SalesManagementController {
      * @return
      */
     @PostMapping(value = "/salesmanagement/getstatuses_add")
-    public String getStatusesAdd(Model model, @RequestParam(name = "customerid", required = false) int customerId) {
+    public String getStatusesAdd(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model, @RequestParam(name = "customerid", required = false) int customerId) {
         if(customerId != 0) {
             List<Status> statusList = salesManagementService.showSpecificCustomerStatuses(customerId);
             model.addAttribute("statusList", statusList);
         }
         return "salesmanagement/order_add::selectAjax";
+    }
+
+    @PostMapping(value = "/salesmanagement/order_add_confirm")
+    public String checkOrderAdd(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model) {
+
+        return "salesmanagement/order_add_confirm";
     }
 }

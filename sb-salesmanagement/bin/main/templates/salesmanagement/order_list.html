@@ -50,23 +50,23 @@
         <td class="center" th:text="*{orderId}"></td>
         <td th:text="*{customer.customerName}"></td>
         <!--/* 「受注日」 表示 */-->
-        <td th:text="*{orderDate}"></td>
+        <td th:text="${#dates.format(order.orderDate, 'yyyy/MM/dd')}"></td>
         <td th:text="'S-' + *{orderSNumber}"></td>
         <td th:text="*{orderName}"></td>
         <!--/* 「数量」 + 「単位」 表示 */-->
         <td
-          th:text="*{orderDetail.detailQuantity} + *{orderDetail.detailUnitName}"></td>
+          th:text="${#numbers.formatInteger(order.orderQuantity ,1,'COMMA')} + *{orderUnitName}"></td>
         <!--/* 「納入指定日」「納入日」 表示 */-->
         <td>
-          <p th:text="*{orderDetail.detailDeliverySpecifiedDate}"></p>
-          <p th:text="*{orderDetail.detailDeliveryDate}"></p>
+          <p th:text="${#dates.format(order.orderDeliverySpecifiedDate, 'yyyy/MM/dd')}"></p>
+          <p th:text="${#dates.format(order.orderDeliveryDate, 'yyyy/MM/dd')}"></p>
         </td>
         <!--/* 「請求日」 表示 */-->
-        <td th:text="*{orderDetail.detailBillingDate}"></td>
+        <td th:text="${#dates.format(order.orderBillingDate, 'yyyy/MM/dd')}"></td>
         <!--/* 「見積金額」「受注金額」 表示  */-->
         <td>
-          <p th:text="*{orderDetail.detailQuotePrice}"></p>
-          <p th:text="*{orderDetail.detailOrderPrice}"></p>
+          <p th:text="'\\' + ${#numbers.formatInteger(order.orderQuotePrice ,1,'COMMA')}"></p>
+          <p th:text="'\\' + ${#numbers.formatInteger(order.orderPrice ,1,'COMMA')}"></p>
         </td>
         <td th:text="*{status.statusName}"></td>
       </tr>
