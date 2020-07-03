@@ -13,7 +13,7 @@
       <tr>
         <th class="confirm-title">顧客</th>
         <th class="confirm-required"></th>
-        <td th:text="*{customerId}"></td>
+        <td th:object="${customer}" th:text="*{customerName}"></td>
       </tr>
       <tr>
         <th class="confirm-title">受注日</th>
@@ -66,7 +66,7 @@
       <tr>
         <th class="confirm-title">ステータス</th>
         <th class="confirm-required"></th>
-        <td th:text="*{statusId}"></td>
+        <td th:object="${status}" th:text="*{statusName}"></td>
       </tr>
       <tr>
         <th class="confirm-title">備考</th>
@@ -74,8 +74,8 @@
         <td th:text="*{orderRemarks}"></td>
       </tr>
     </table>
-    <form th:action="@{/salesmanagement/order_add_confirm}"
-      th:method="post" th:object="${orderAddForm}">
+    <form th:action="@{/salesmanagement/create_order}"
+      th:method="post">
       <div class="btn-area-center">
         <input type="submit" value="確認" class="btn"> <input
           class="back" type="button" value="戻る" onclick="history.back();">

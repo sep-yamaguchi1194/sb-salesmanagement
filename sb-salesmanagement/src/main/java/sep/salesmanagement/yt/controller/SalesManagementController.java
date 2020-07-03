@@ -76,7 +76,21 @@ public class SalesManagementController {
 
     @PostMapping(value = "/salesmanagement/order_add_confirm")
     public String checkOrderAdd(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model) {
+    	//Customer Entity
+    	Customer customer = salesManagementService.showSelectedCustomer(orderAddForm.getCustomerId());
+    	model.addAttribute("customer", customer);
 
+    	//Status Entity
+    	Status status = salesManagementService.showSelectedStatus(orderAddForm.getCustomerId(), orderAddForm.getStatusId());
+    	model.addAttribute("status", status);
         return "salesmanagement/order_add_confirm";
     }
+
+    @PostMapping(value = "/salesmanagement/create_order")
+    public String createNewOrder(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model) {
+    	salesManagementService.createOrder(orderAddForm);
+    	return "redirect:/salesmanagement/order_list";
+    }
+
+
 }

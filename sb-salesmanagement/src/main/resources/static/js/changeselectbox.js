@@ -20,6 +20,23 @@ $(function() {
 	});
 });
 
+$(document).on('unload',function(){
+	var tmpCustomerId = $("#customerId").val();
+	if(tmpCustomerId !== 0) {
+		$.ajax({
+			type : "POST",
+			url : "getstatuses_add",
+			dataType : "html",
+			data : {
+				customerid : tmpCustomerId
+			},
+			success : function(data, status, xhr) {
+				$(".div_for_embeded").html(data);
+			}
+		});
+	}
+});
+
 $(function() {
 	$("#customerId").change(function() {
 		event.preventDefault();
