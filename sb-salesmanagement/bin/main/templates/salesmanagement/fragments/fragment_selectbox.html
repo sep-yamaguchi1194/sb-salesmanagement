@@ -14,9 +14,11 @@
   </div>
 
   <div th:fragment="odr_add_selectdiv" id="selectcategory">
-    <select id="statusId" name="statusId" th:object="${orderAddForm}" th:field="*{statusId}">
+    <select id="statusId" name="statusId" th:object="${orderAddForm}"
+      th:field="*{statusId}">
       <option th:each="status : ${statusList}"
-        th:value="${status.statusId}" th:text="${status.statusName}">childselectbox</option>
+        th:value="${status.statusId}" th:text="${status.statusName}"
+        th:selected="${status.statusId}">childselectbox</option>
     </select>
   </div>
 </body>
