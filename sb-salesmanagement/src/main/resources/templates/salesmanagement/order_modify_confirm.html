@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="/css/sb-salesmanagement.css">
 </head>
 <body>
-  <h1>製造部売上管理システム：案件登録(確認)</h1>
-  <div class="container">
-    <table class="table-confirm" th:object="${orderAddForm}">
+<h1>製造部売上管理システム：案件編集(確認)</h1>
+ <div class="container">
+    <table class="table-confirm" th:object="${orderModifyForm}">
       <tr>
         <th class="confirm-title">顧客</th>
         <th class="confirm-required"></th>
@@ -18,12 +18,12 @@
       <tr>
         <th class="confirm-title">受注日</th>
         <th class="confirm-required"></th>
-        <td th:text="${not #strings.isEmpty(orderAddForm.orderDate)}? ${orderAddForm.orderDate} : '-'"></td>
+        <td th:text="${not #strings.isEmpty(orderModifyForm.orderDate)}? ${orderModifyForm.orderDate} : '-'"></td>
       </tr>
       <tr>
         <th class="confirm-title">S番号</th>
         <th class="confirm-required"></th>
-        <td th:text="${not #strings.isEmpty(orderAddForm.orderSNumber)}? 'S-' + ${orderAddForm.orderSNumber} : '-'"></td>
+        <td th:text="${not #strings.isEmpty(orderModifyForm.orderSNumber)}? 'S-' + ${orderModifyForm.orderSNumber} : '-'"></td>
       </tr>
       <tr>
         <th class="confirm-title">件名</th>
@@ -34,37 +34,37 @@
         <th class="confirm-title">数量/単位</th>
         <th class="confirm-required"></th>
         <td
-          th:text="${#numbers.formatInteger(orderAddForm.orderQuantity ,1,'COMMA')} + *{unitName}"></td>
+          th:text="${#numbers.formatInteger(orderModifyForm.orderQuantity ,1,'COMMA')} + *{unitName}"></td>
       </tr>
       <tr>
         <th class="confirm-title">納入指定日</th>
         <th class="confirm-required"></th>
         <td
-          th:text="${not #strings.isEmpty(orderAddForm.deliverySpecifiedDate)}? ${orderAddForm.deliverySpecifiedDate} : '-'"></td>
+          th:text="${not #strings.isEmpty(orderModifyForm.deliverySpecifiedDate)}? ${orderModifyForm.deliverySpecifiedDate} : '-'"></td>
       </tr>
       <tr>
         <th class="confirm-title">納入日</th>
         <th class="confirm-required"></th>
         <td
-          th:text="${not #strings.isEmpty(orderAddForm.deliveryDate)}? ${orderAddForm.deliveryDate} : '-'"></td>
+          th:text="${not #strings.isEmpty(orderModifyForm.deliveryDate)}? ${orderModifyForm.deliveryDate} : '-'"></td>
       </tr>
       <tr>
         <th class="confirm-title">請求日</th>
         <th class="confirm-required"></th>
         <td
-          th:text="${not #strings.isEmpty(orderAddForm.billingDate)}? ${orderAddForm.billingDate} : '-'"></td>
+          th:text="${not #strings.isEmpty(orderModifyForm.billingDate)}? ${orderModifyForm.billingDate} : '-'"></td>
       </tr>
       <tr>
         <th class="confirm-title">見積金額</th>
         <th class="confirm-required"></th>
         <td
-          th:text="'\\' + ${#numbers.formatInteger(orderAddForm.quotePrice ,1,'COMMA')}"></td>
+          th:text="'\\' + ${#numbers.formatInteger(orderModifyForm.quotePrice ,1,'COMMA')}"></td>
       </tr>
       <tr>
         <th class="confirm-title">受注金額</th>
         <th class="confirm-required"></th>
         <td
-          th:text="'\\' + ${#numbers.formatInteger(orderAddForm.orderPrice ,1,'COMMA')}"></td>
+          th:text="'\\' + ${#numbers.formatInteger(orderModifyForm.orderPrice ,1,'COMMA')}"></td>
       </tr>
       <tr>
         <th class="confirm-title">ステータス</th>
@@ -77,8 +77,8 @@
         <td th:text="*{orderRemarks}"></td>
       </tr>
     </table>
-    <form th:action="@{/salesmanagement/create_order}"
-      th:object="${orderAddForm}" th:method="post">
+    <form th:action="@{/salesmanagement/update_order}"
+      th:object="${orderModifyForm}" th:method="post">
       <input id="customerId" name="customerId" type="hidden"
         th:value="*{customerId}"> <input id="orderDate"
         name="orderDate" type="hidden" th:value="*{orderDate}">

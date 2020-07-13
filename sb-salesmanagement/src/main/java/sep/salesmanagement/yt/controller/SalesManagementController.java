@@ -14,8 +14,8 @@ import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.form.OrderAddForm;
+import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.service.SalesManagementService;
-
 
 @Controller
 public class SalesManagementController {
@@ -41,7 +41,7 @@ public class SalesManagementController {
      */
     @PostMapping(value = "/salesmanagement/getstatuses")
     public String getStatuses(Model model, @RequestParam(name = "customerid", required = false) String customerId) {
-        if(customerId != "0") {
+        if (customerId != "0") {
             List<Status> statusList = salesManagementService.showSpecificCustomerStatuses(Integer.parseInt(customerId));
             model.addAttribute("statusList", statusList);
         }
@@ -54,6 +54,7 @@ public class SalesManagementController {
         OrderAddForm orderAddForm = new OrderAddForm();
         model.addAttribute("orderAddForm", orderAddForm);
 
+        //Customer Entity List
         List<Customer> customerList = salesManagementService.showCustomer();
         model.addAttribute("customerList", customerList);
         return "salesmanagement/order_add";
@@ -66,8 +67,9 @@ public class SalesManagementController {
      * @return
      */
     @PostMapping(value = "/salesmanagement/getstatuses_add")
-    public String getStatusesAdd(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model, @RequestParam(name = "customerid", required = false) int customerId) {
-        if(customerId != 0) {
+    public String getStatusesAdd(@ModelAttribute("orderAddForm") OrderAddForm orderAddForm, Model model,
+            @RequestParam(name = "customerid", required = false) int customerId) {
+        if (customerId != 0) {
             List<Status> statusList = salesManagementService.showSpecificCustomerStatuses(customerId);
             model.addAttribute("statusList", statusList);
         }
@@ -75,22 +77,73 @@ public class SalesManagementController {
     }
 
     @PostMapping(value = "/salesmanagement/order_add_confirm")
-    public String checkOrderAdd(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model) {
-    	//Customer Entity
-    	Customer customer = salesManagementService.showSelectedCustomer(orderAddForm.getCustomerId());
-    	model.addAttribute("customer", customer);
+    public String checkOrderAdd(@ModelAttribute("orderAddForm") OrderAddForm orderAddForm, Model model) {
+        //Customer Entity
+        Customer customer = salesManagementService.showSelectedCustomer(orderAddForm.getCustomerId());
+        model.addAttribute("customer", customer);
 
-    	//Status Entity
-    	Status status = salesManagementService.showSelectedStatus(orderAddForm.getCustomerId(), orderAddForm.getStatusId());
-    	model.addAttribute("status", status);
+        //Status Entity
+        Status status = salesManagementService.showSelectedStatus(orderAddForm.getCustomerId(),
+                orderAddForm.getStatusId());
+        model.addAttribute("status", status);
         return "salesmanagement/order_add_confirm";
     }
 
     @PostMapping(value = "/salesmanagement/create_order")
-    public String createNewOrder(@ModelAttribute("orderAddForm")OrderAddForm orderAddForm, Model model) {
-    	salesManagementService.createOrder(orderAddForm);
-    	return "redirect:/salesmanagement/order_list";
+    public String createNewOrder(@ModelAttribute("orderAddForm") OrderAddForm orderAddForm, Model model) {
+        salesManagementService.createOrder(orderAddForm);
+        return "redirect:/salesmanagement/order_list";
     }
 
+    @PostMapping(value = "/salesmanagement/order_modify")
+    public String displayOrderModify(Model model, @RequestParam(name = "orderId") int orderId) {
+        Order order = salesManagementService.showSelectedOrder(orderId);
+        OrderModifyForm orderModifyForm = new OrderModifyForm();
+        orderModifyForm.setOrderId(order.getOrderId());
+        orderModifyForm.setCustomerId(order.getOrderCustomerId());
+        orderModifyForm.setOrderDate(salesManagementService.convertDateIntoString(order.getOrderDate()));
+        orderModifyForm.setOrderSNumber(order.getOrderSNumber());
+        orderModifyForm.setOrderName(order.getOrderName());
+        orderModifyForm.setOrderQuantity(order.getOrderQuantity());
+        orderModifyForm.setUnitName(order.getOrderUnitName());
+        orderModifyForm.setDeliverySpecifiedDate(
+                salesManagementService.convertDateIntoString(order.getOrderDeliverySpecifiedDate()));
+        orderModifyForm.setDeliveryDate(salesManagementService.convertDateIntoString(order.getOrderDeliveryDate()));
+        orderModifyForm.setBillingDate(salesManagementService.convertDateIntoString(order.getOrderBillingDate()));
+        orderModifyForm.setQuotePrice(order.getOrderQuotePrice());
+        orderModifyForm.setOrderPrice(order.getOrderPrice());
+        orderModifyForm.setStatusId(order.getOrderStatusId());
+        orderModifyForm.setOrderRemarks(order.getOrderRemarks());
 
+        model.addAttribute("orderModifyForm", orderModifyForm);
+
+        //CustomerEntity
+        Customer customer = salesManagementService.showSelectedCustomer(order.getOrderCustomerId());
+        model.addAttribute("customer", customer);
+
+        //Status Entity List
+        List<Status> statusList = salesManagementService.showSpecificCustomerStatuses(order.getOrderCustomerId());
+        model.addAttribute("statusList", statusList);
+
+        return "salesmanagement/order_modify";
+    }
+
+    @PostMapping(value = "/salesmanagement/order_modify_confirm")
+    public String checkOrderModify(@ModelAttribute("orderModifyForm") OrderModifyForm orderModifyForm, Model model) {
+        //Customer Entity
+        Customer customer = salesManagementService.showSelectedCustomer(orderModifyForm.getCustomerId());
+        model.addAttribute("customer", customer);
+
+        //Status Entity
+        Status status = salesManagementService.showSelectedStatus(orderModifyForm.getCustomerId(),
+                orderModifyForm.getStatusId());
+        model.addAttribute("status", status);
+        return "salesmanagement/order_modify_confirm";
+    }
+
+    @PostMapping(value = "/salesmanagement/order_update")
+    public String updateOrder(@ModelAttribute("orderModifyForm") OrderModifyForm orderModifyForm, Model model) {
+        salesManagementService.updateOrder(orderModifyForm);
+        return "redirect:/salesmanagement/order_list";
+    }
 }

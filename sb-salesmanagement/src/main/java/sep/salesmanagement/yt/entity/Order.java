@@ -38,9 +38,6 @@ public class Order implements Serializable {
     @Column(name = "order_name")
     private String orderName;
 
-    @Column(name = "order_status_id")
-    private String orderStatusId;
-
     @Column(name = "order_quantity")
     private int orderQuantity;
 
@@ -64,6 +61,9 @@ public class Order implements Serializable {
 
     @Column(name = "order_remarks")
     private String orderRemarks;
+
+    @Column(name = "order_status_id")
+    private String orderStatusId;
 
     @Column(name = "order_is_deleted")
     private String orderIsDeleted;

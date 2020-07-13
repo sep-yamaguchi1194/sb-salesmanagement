@@ -1,12 +1,6 @@
 package sep.salesmanagement.yt.form;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -20,9 +14,7 @@ public class OrderAddForm implements Serializable {
     /**
      * 受注日
      */
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @Temporal(TemporalType.DATE)
-    private Date orderDate;
+    private String orderDate;
 
     /**
      * S番号
@@ -47,23 +39,17 @@ public class OrderAddForm implements Serializable {
     /**
      * 納入指定日
      */
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @Temporal(TemporalType.DATE)
-    private Date deliverySpecifiedDate;
+    private String deliverySpecifiedDate;
 
     /**
      * 納入日
      */
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @Temporal(TemporalType.DATE)
-    private Date deliveryDate;
+    private String deliveryDate;
 
     /**
      * 請求日
      */
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @Temporal(TemporalType.DATE)
-    private Date billingDate;
+    private String billingDate;
 
     /**
      * 見積金額

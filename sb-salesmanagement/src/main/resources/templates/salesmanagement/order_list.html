@@ -43,6 +43,8 @@
         <th>見積金額<br>／受注金額
         </th>
         <th>ステータス</th>
+        <th>編集</th>
+        <th>削除</th>
       </tr>
     </thead>
     <tbody>
@@ -50,7 +52,8 @@
         <td class="center" th:text="*{orderId}"></td>
         <td th:text="*{customer.customerName}"></td>
         <!--/* 「受注日」 表示 */-->
-        <td th:text="${#dates.format(order.orderDate, 'yyyy/MM/dd')}"></td>
+        <td
+          th:text="${order.orderDate != null}? ${#dates.format(order.orderDate, 'yyyy/MM/dd')} : '-'"></td>
         <td th:text="'S-' + *{orderSNumber}"></td>
         <td th:text="*{orderName}"></td>
         <!--/* 「数量」 + 「単位」 表示 */-->
@@ -58,17 +61,34 @@
           th:text="${#numbers.formatInteger(order.orderQuantity ,1,'COMMA')} + *{orderUnitName}"></td>
         <!--/* 「納入指定日」「納入日」 表示 */-->
         <td>
-          <p th:text="${#dates.format(order.orderDeliverySpecifiedDate, 'yyyy/MM/dd')}"></p>
-          <p th:text="${#dates.format(order.orderDeliveryDate, 'yyyy/MM/dd')}"></p>
+          <p
+            th:text="${order.orderDeliverySpecifiedDate != null}? ${#dates.format(order.orderDeliverySpecifiedDate, 'yyyy/MM/dd')} : '-'"></p>
+          <p
+            th:text="${order.orderDeliveryDate != null}? ${#dates.format(order.orderDeliveryDate, 'yyyy/MM/dd')} : '-'"></p>
         </td>
         <!--/* 「請求日」 表示 */-->
-        <td th:text="${#dates.format(order.orderBillingDate, 'yyyy/MM/dd')}"></td>
+        <td
+          th:text="${order.orderBillingDate != null}? ${#dates.format(order.orderBillingDate, 'yyyy/MM/dd')} : '-'"></td>
         <!--/* 「見積金額」「受注金額」 表示  */-->
         <td>
-          <p th:text="'\\' + ${#numbers.formatInteger(order.orderQuotePrice ,1,'COMMA')}"></p>
-          <p th:text="'\\' + ${#numbers.formatInteger(order.orderPrice ,1,'COMMA')}"></p>
+          <p
+            th:text="'\\' + ${#numbers.formatInteger(order.orderQuotePrice ,1,'COMMA')}"></p>
+          <p
+            th:text="'\\' + ${#numbers.formatInteger(order.orderPrice ,1,'COMMA')}"></p>
         </td>
         <td th:text="*{status.statusName}"></td>
+        <td>
+          <form action="/salesmanagement/order_modify" method="post">
+            <input name="orderId" type="hidden" th:value="*{orderId}"> <input
+              type="submit" value="編集" class="btn">
+          </form>
+        </td>
+        <td>
+          <form action="/addressbook/order_delete_confirm" method="post">
+            <input name="orderId" type="hidden" th:value="*{orderId}"> <input
+              type="submit" value="削除" class="btn">
+          </form>
+        </td>
       </tr>
     </tbody>
   </table>
