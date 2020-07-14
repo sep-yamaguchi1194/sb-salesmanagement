@@ -9,7 +9,7 @@
 <body>
   <h1>製造部売上管理システム：案件編集</h1>
   <div class="container">
-    <form th:action="@{/salesmanagement/order_add_confirm}"
+    <form th:action="@{/salesmanagement/order_modify_confirm}"
       th:method="post" th:object="${orderModifyForm}">
       <!--/* orderId, customerId as hidden */-->
       <input id="orderId" type="hidden" th:field="*{orderId}">

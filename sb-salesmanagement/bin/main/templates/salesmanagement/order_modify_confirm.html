@@ -79,6 +79,7 @@
     </table>
     <form th:action="@{/salesmanagement/update_order}"
       th:object="${orderModifyForm}" th:method="post">
+      <input id="orderId" name="orderId" th:field="*{orderId}" type="hidden" >
       <input id="customerId" name="customerId" type="hidden"
         th:value="*{customerId}"> <input id="orderDate"
         name="orderDate" type="hidden" th:value="*{orderDate}">

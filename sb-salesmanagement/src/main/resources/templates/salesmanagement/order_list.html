@@ -54,7 +54,7 @@
         <!--/* 「受注日」 表示 */-->
         <td
           th:text="${order.orderDate != null}? ${#dates.format(order.orderDate, 'yyyy/MM/dd')} : '-'"></td>
-        <td th:text="'S-' + *{orderSNumber}"></td>
+        <td th:text="${not #strings.isEmpty(order.orderSNumber)}? 'S-' + ${order.orderSNumber} : '-'"></td>
         <td th:text="*{orderName}"></td>
         <!--/* 「数量」 + 「単位」 表示 */-->
         <td
@@ -84,7 +84,7 @@
           </form>
         </td>
         <td>
-          <form action="/addressbook/order_delete_confirm" method="post">
+          <form action="/salesmanagement/order_delete_confirm" method="post">
             <input name="orderId" type="hidden" th:value="*{orderId}"> <input
               type="submit" value="削除" class="btn">
           </form>

@@ -75,6 +75,9 @@ public class SalesManagementService {
         Order order = new Order();
         order.setOrderCustomerId(orderAddForm.getCustomerId());
         order.setOrderDate(convertStringIntoDate(orderAddForm.getOrderDate()));
+        if(orderAddForm.getOrderSNumber().isEmpty()) {
+            orderAddForm.setOrderSNumber(null);
+        }
         order.setOrderSNumber(orderAddForm.getOrderSNumber());
         order.setOrderName(orderAddForm.getOrderName());
         order.setOrderQuantity(orderAddForm.getOrderQuantity());
@@ -93,9 +96,10 @@ public class SalesManagementService {
     public void updateOrder(OrderModifyForm orderModifyForm) {
         Order order = showSelectedOrder(orderModifyForm.getOrderId());
         order.setOrderDate(convertStringIntoDate(orderModifyForm.getOrderDate()));
-        if(order.getOrderSNumber() != orderModifyForm.getOrderSNumber()) {
-            order.setOrderSNumber(orderModifyForm.getOrderSNumber());
+        if(orderModifyForm.getOrderSNumber().isEmpty()) {
+            orderModifyForm.setOrderSNumber(null);
         }
+        order.setOrderSNumber(orderModifyForm.getOrderSNumber());
         order.setOrderName(orderModifyForm.getOrderName());
         order.setOrderQuantity(orderModifyForm.getOrderQuantity());
         order.setOrderUnitName(orderModifyForm.getUnitName());
@@ -106,6 +110,13 @@ public class SalesManagementService {
         order.setOrderPrice(orderModifyForm.getOrderPrice());
         order.setOrderStatusId(orderModifyForm.getStatusId());
         order.setOrderRemarks(orderModifyForm.getOrderRemarks());
+        orderRepository.saveAndFlush(order);
+    }
+
+    public void logicalDeleteOrder(int orderId) {
+        Order order = showSelectedOrder(orderId);
+        order.setOrderIsDeleted("1");
+        orderRepository.save(order);
     }
 
     public Date convertStringIntoDate(String date) {

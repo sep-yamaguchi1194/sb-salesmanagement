@@ -141,9 +141,23 @@ public class SalesManagementController {
         return "salesmanagement/order_modify_confirm";
     }
 
-    @PostMapping(value = "/salesmanagement/order_update")
+    @PostMapping(value = "/salesmanagement/update_order")
     public String updateOrder(@ModelAttribute("orderModifyForm") OrderModifyForm orderModifyForm, Model model) {
         salesManagementService.updateOrder(orderModifyForm);
+        return "redirect:/salesmanagement/order_list";
+    }
+
+    @PostMapping(value = "/salesmanagement/order_delete_confirm")
+    public String displayOrderDeleteConfirm(Model model, @RequestParam(name = "orderId") int orderId) {
+        Order order = salesManagementService.showSelectedOrder(orderId);
+        model.addAttribute("order", order);
+
+        return "salesmanagement/order_delete_confirm";
+    }
+
+    @PostMapping(value = "/salesmanagement/delete_order")
+    public String deleteOrder(Model model, @RequestParam(name = "orderId") int orderId) {
+        salesManagementService.logicalDeleteOrder(orderId);
         return "redirect:/salesmanagement/order_list";
     }
 }
