@@ -9,7 +9,8 @@
 <body>
   <h1>製造部売上管理システム：案件登録</h1>
   <div class="container">
-    <form th:action="@{/salesmanagement/order_add_confirm}" th:method="post" th:object="${orderAddForm}">
+    <form th:action="@{/salesmanagement/order_add_confirm}"
+      th:method="post" th:object="${orderAddForm}">
       <table class="table-form">
         <tr>
           <th class="form-title">顧客</th>
@@ -25,7 +26,10 @@
         <tr>
           <th class="form-title">受注日</th>
           <th class="form-required"></th>
-          <td><input type="text" id="orderDate" th:field="*{orderDate}" placeholder="YYYY/MM/DD"></td>
+          <td><input type="text" id="orderDate" th:field="*{orderDate}"
+            placeholder="YYYY/MM/DD">
+          <div th:if="${#fields.hasErrors('orderDate')}"
+              class="error_message" th:errors="*{orderDate}"></div></td>
         </tr>
         <tr>
           <th class="form-title">S番号</th>
@@ -36,7 +40,9 @@
         <tr>
           <th class="form-title">件名</th>
           <th class="form-required">*</th>
-          <td><input type="text" id="orderName" th:field="*{orderName}"></td>
+          <td><input type="text" id="orderName" th:field="*{orderName}">
+          <div th:if="${#fields.hasErrors('orderName')}"
+              class="error_message" th:errors="*{orderName}"></div></td>
         </tr>
         <tr>
           <th class="form-title">数量/単位</th>

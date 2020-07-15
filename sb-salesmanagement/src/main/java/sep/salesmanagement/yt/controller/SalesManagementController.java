@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +79,14 @@ public class SalesManagementController {
     }
 
     @PostMapping(value = "/salesmanagement/order_add_confirm")
-    public String checkOrderAdd(@ModelAttribute("orderAddForm") OrderAddForm orderAddForm, Model model) {
+    public String checkOrderAdd(@ModelAttribute("orderAddForm") @Validated(OrderAddForm.All.class) OrderAddForm orderAddForm, BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            //Customer Entity List
+            List<Customer> customerList = salesManagementService.showCustomer();
+            model.addAttribute("customerList", customerList);
+            model.addAttribute("orderAddForm", orderAddForm);
+            return "salesmanagement/order_add";
+        }
         //Customer Entity
         Customer customer = salesManagementService.showSelectedCustomer(orderAddForm.getCustomerId());
         model.addAttribute("customer", customer);
