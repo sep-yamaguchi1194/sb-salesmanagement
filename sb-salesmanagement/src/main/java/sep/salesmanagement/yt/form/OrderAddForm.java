@@ -6,8 +6,8 @@ import javax.validation.GroupSequence;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
+import sep.salesmanagement.yt.validation.CustomPattern;
 import sep.salesmanagement.yt.validation.ExistsDate;
-import sep.salesmanagement.yt.validation.IsDate;
 
 @Data
 public class OrderAddForm implements Serializable {
@@ -26,8 +26,8 @@ public class OrderAddForm implements Serializable {
     /**
      * 受注日
      */
-    @IsDate(groups = Group1.class, message = "日付は半角数字で[年(4桁)/月(2桁)/日(2桁)]の形式で入力してください。")
-    @ExistsDate(groups = Group1.class, message = "[${validatedValue}]は存在しない日付です。")
+    @CustomPattern(groups = Group1.class, regex="\\d{4}/\\d{2}/\\d{2}", message = "日付は半角数字で[年(4桁)/月(2桁)/日(2桁)]の形式で入力してください。")
+    @ExistsDate(groups = Group2.class, message = "[${validatedValue}]は存在しない日付です。")
     private String orderDate;
 
     /**
@@ -59,11 +59,15 @@ public class OrderAddForm implements Serializable {
     /**
      * 納入日
      */
+    @CustomPattern(groups = Group1.class, regex="\\d{4}/\\d{2}/\\d{2}", message = "日付は半角数字で[年(4桁)/月(2桁)/日(2桁)]の形式で入力してください。")
+    @ExistsDate(groups = Group2.class, message = "[${validatedValue}]は存在しない日付です。")
     private String deliveryDate;
 
     /**
      * 請求日
      */
+    @CustomPattern(groups = Group1.class, regex="\\d{4}/\\d{2}/\\d{2}", message = "日付は半角数字で[年(4桁)/月(2桁)/日(2桁)]の形式で入力してください。")
+    @ExistsDate(groups = Group2.class, message = "[${validatedValue}]は存在しない日付です。")
     private String billingDate;
 
     /**

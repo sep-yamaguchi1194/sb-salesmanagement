@@ -137,8 +137,13 @@ public class SalesManagementController {
         return "salesmanagement/order_modify";
     }
 
+    //405Error 修正対象箇所
     @PostMapping(value = "/salesmanagement/order_modify_confirm")
-    public String checkOrderModify(@ModelAttribute("orderModifyForm") OrderModifyForm orderModifyForm, Model model) {
+    public String checkOrderModify(@ModelAttribute("orderModifyForm") @Validated(OrderAddForm.All.class) OrderModifyForm orderModifyForm, BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("orderModifyForm", orderModifyForm);
+            return "redirect:/salesmanagement/order_modify";
+        }
         //Customer Entity
         Customer customer = salesManagementService.showSelectedCustomer(orderModifyForm.getCustomerId());
         model.addAttribute("customer", customer);
