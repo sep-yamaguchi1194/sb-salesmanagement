@@ -54,6 +54,8 @@ public class OrderAddForm implements Serializable {
     /**
      * 納入指定日
      */
+    @CustomPattern(groups = Group1.class, regex="\\d{4}/\\d{2}/\\d{2}", message = "日付は半角数字で[年(4桁)/月(2桁)/日(2桁)]の形式で入力してください。")
+    @ExistsDate(groups = Group2.class, message = "[${validatedValue}]は存在しない日付です。")
     private String deliverySpecifiedDate;
 
     /**

@@ -10,6 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import sep.salesmanagement.yt.entity.Customer;
@@ -26,10 +28,15 @@ public class SalesManagementController {
 
     @GetMapping(value = "/salesmanagement/order_list")
     public String displayOrderList(Model model) {
-
+    	//Customer Entity List
         List<Customer> customerList = salesManagementService.showCustomer();
         model.addAttribute("customerList", customerList);
 
+        //Status Entity List
+        List<Status> statusList = salesManagementService.showStatus();
+        model.addAttribute("statusList", statusList);
+
+        //Order Entity List
         List<Order> orderList = salesManagementService.showOrder();
         model.addAttribute("orderList", orderList);
         return "salesmanagement/order_list";
@@ -104,7 +111,7 @@ public class SalesManagementController {
         return "redirect:/salesmanagement/order_list";
     }
 
-    @PostMapping(value = "/salesmanagement/order_modify")
+    @RequestMapping(value = "/salesmanagement/order_modify" , method = RequestMethod.POST)
     public String displayOrderModify(Model model, @RequestParam(name = "orderId") int orderId) {
         Order order = salesManagementService.showSelectedOrder(orderId);
         OrderModifyForm orderModifyForm = new OrderModifyForm();
@@ -138,11 +145,20 @@ public class SalesManagementController {
     }
 
     //405Error 修正対象箇所
-    @PostMapping(value = "/salesmanagement/order_modify_confirm")
-    public String checkOrderModify(@ModelAttribute("orderModifyForm") @Validated(OrderAddForm.All.class) OrderModifyForm orderModifyForm, BindingResult result, Model model) {
+    @RequestMapping(value = "/salesmanagement/order_modify_confirm", method = RequestMethod.POST)
+    public String checkOrderModify(@ModelAttribute("orderModifyForm") @Validated(OrderModifyForm.All.class) OrderModifyForm orderModifyForm, BindingResult result, Model model) {
         if(result.hasErrors()) {
             model.addAttribute("orderModifyForm", orderModifyForm);
-            return "redirect:/salesmanagement/order_modify";
+
+            //CustomerEntity
+            Customer customer = salesManagementService.showSelectedCustomer(orderModifyForm.getCustomerId());
+            model.addAttribute("customer", customer);
+
+            //Status Entity List
+            List<Status> statusList = salesManagementService.showSpecificCustomerStatuses(orderModifyForm.getCustomerId());
+            model.addAttribute("statusList", statusList);
+
+            return "salesmanagement/order_modify";
         }
         //Customer Entity
         Customer customer = salesManagementService.showSelectedCustomer(orderModifyForm.getCustomerId());

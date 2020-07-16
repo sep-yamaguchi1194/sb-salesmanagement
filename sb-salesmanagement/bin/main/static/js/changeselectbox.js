@@ -1,5 +1,5 @@
 /**
- * セレクトボックスを動的に書き換えるためのjs
+ * セレクトボックスを動的に書き換えるためのjs [※念のためコメントアウトして保持する]
  */
 
 $(function() {
@@ -19,6 +19,7 @@ $(function() {
 		});
 	});
 });
+
 
 $(document).on('unload',function(){
 	var tmpCustomerId = $("#customerId").val();

@@ -1,101 +1,107 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>製造部売上管理システム</title>
 <link rel="stylesheet" href="/css/sb-salesmanagement.css">
 </head>
 <body>
-  <h1>製造部売上管理システム：案件編集</h1>
-  <div class="container">
-    <form th:action="@{/salesmanagement/order_modify_confirm}"
-      th:method="post" th:object="${orderModifyForm}">
-      <!--/* orderId, customerId as hidden */-->
-      <input id="orderId" type="hidden" th:field="*{orderId}">
-      <input id="customerId" type="hidden" th:field="*{customerId}">
-      <table class="table-form">
-        <tr>
-          <th class="form-title">顧客</th>
-          <th class="form-required">*</th>
-          <td th:object="${customer}" th:text="*{customerName}"></td>
-        </tr>
-        <tr>
-          <th class="form-title">受注日</th>
-          <th class="form-required"></th>
-          <td><input type="text" id="orderDate" th:field="*{orderDate}"
-            placeholder="YYYY/MM/DD"></td>
-        </tr>
-        <tr>
-          <th class="form-title">S番号</th>
-          <th class="form-required"></th>
-          <td><input type="text" id="orderSNumber"
-            th:field="*{orderSNumber}" maxlength="4"></td>
-        </tr>
-        <tr>
-          <th class="form-title">件名</th>
-          <th class="form-required">*</th>
-          <td><input type="text" id="orderName" th:field="*{orderName}"></td>
-        </tr>
-        <tr>
-          <th class="form-title">数量/単位</th>
-          <th class="form-required"></th>
-          <td><input type="number" id="orderQuantity"
-            th:field="*{orderQuantity}" min="0"> <input type="text"
-            id="unitName" th:field="*{unitName}" maxlength="3"></td>
-        </tr>
-        <tr>
-          <th class="form-title">納入指定日</th>
-          <th class="form-required"></th>
-          <td><input type="text" id="deliverySpecifiedDate"
-            th:field="*{deliverySpecifiedDate}" placeholder="YYYY/MM/DD"></td>
-        </tr>
-        <tr>
-          <th class="form-title">納入日</th>
-          <th class="form-required"></th>
-          <td><input type="text" id="deliveryDate"
-            th:field="*{deliveryDate}" placeholder="YYYY/MM/DD"></td>
-        </tr>
-        <tr>
-          <th class="form-title">請求日</th>
-          <th class="form-required"></th>
-          <td><input type="text" id="billingDate"
-            th:field="*{billingDate}" placeholder="YYYY/MM/DD"></td>
-        </tr>
-        <tr>
-          <th class="form-title">見積金額</th>
-          <th class="form-required"></th>
-          <td><input type="number" id="quotePrice"
-            th:field="*{quotePrice}" min="0"></td>
-        </tr>
-        <tr>
-          <th class="form-title">受注金額</th>
-          <th class="form-required"></th>
-          <td><input type="number" id="orderPrice"
-            th:field="*{orderPrice}" min="0"></td>
-        </tr>
-        <tr>
-          <th class="form-title">ステータス</th>
-          <th class="form-required"></th>
-          <td><select id="statusId" th:field="*{statusId}">
-              <!--/* orderModifyFormのフィールド statusId が status.statusIdに一致する場合に selected 付与 */-->
-              <option th:each="status : ${statusList}"
-                th:value="${status.statusId}" th:text="${status.statusName}"
-                th:selected="${status.statusId}"></option>
-          </select></td>
-        </tr>
-        <tr>
-          <th class="form-title">備考</th>
-          <th class="form-required"></th>
-          <td><textarea id="orderRemarks" th:field="*{orderRemarks}"
-              name="kanso" cols="40" rows="4" maxlength="20"></textarea></td>
-        </tr>
-      </table>
-      <div class="btn-area-center">
-        <input type="submit" value="確認" class="btn"> <input
-          class="back" type="button" value="戻る" onclick="history.back();">
-      </div>
-    </form>
-  </div>
+	<h1>製造部売上管理システム：案件編集</h1>
+	<div class="container">
+		<form th:action="@{/salesmanagement/order_modify_confirm}"
+			th:method="post" th:object="${orderModifyForm}">
+			<!--/* orderId, customerId as hidden */-->
+			<input id="orderId" type="hidden" th:field="*{orderId}"> <input
+				id="customerId" type="hidden" th:field="*{customerId}">
+			<table class="table-form">
+				<tr>
+					<th class="form-title">顧客</th>
+					<th class="form-required">*</th>
+					<td th:object="${customer}" th:text="*{customerName}"></td>
+				</tr>
+				<tr>
+					<th class="form-title">受注日</th>
+					<th class="form-required"></th>
+					<td><input type="text" id="orderDate" th:field="*{orderDate}"
+						placeholder="YYYY/MM/DD"><div th:if="${#fields.hasErrors('orderDate')}"
+							class="error-message" th:errors="*{orderDate}"></div></td>
+				</tr>
+				<tr>
+					<th class="form-title">S番号</th>
+					<th class="form-required"></th>
+					<td><input type="text" id="orderSNumber"
+						th:field="*{orderSNumber}" maxlength="4"></td>
+				</tr>
+				<tr>
+					<th class="form-title">件名</th>
+					<th class="form-required">*</th>
+					<td><input type="text" id="orderName" th:field="*{orderName}">
+						<div th:if="${#fields.hasErrors('orderName')}"
+							class="error-message" th:errors="*{orderName}"></div></td>
+				</tr>
+				<tr>
+					<th class="form-title">数量/単位</th>
+					<th class="form-required"></th>
+					<td><input type="number" id="orderQuantity"
+						th:field="*{orderQuantity}" min="0"> <input type="text"
+						id="unitName" th:field="*{unitName}" maxlength="3"></td>
+				</tr>
+				<tr>
+					<th class="form-title">納入指定日</th>
+					<th class="form-required"></th>
+					<td><input type="text" id="deliverySpecifiedDate"
+						th:field="*{deliverySpecifiedDate}" placeholder="YYYY/MM/DD"><div th:if="${#fields.hasErrors('deliverySpecifiedDate')}"
+							class="error-message" th:errors="*{deliverySpecifiedDate}"></div></td>
+				</tr>
+				<tr>
+					<th class="form-title">納入日</th>
+					<th class="form-required"></th>
+					<td><input type="text" id="deliveryDate"
+						th:field="*{deliveryDate}" placeholder="YYYY/MM/DD"><div th:if="${#fields.hasErrors('deliveryDate')}"
+							class="error-message" th:errors="*{deliveryDate}"></div></td>
+				</tr>
+				<tr>
+					<th class="form-title">請求日</th>
+					<th class="form-required"></th>
+					<td><input type="text" id="billingDate"
+						th:field="*{billingDate}" placeholder="YYYY/MM/DD"><div th:if="${#fields.hasErrors('billingDate')}"
+							class="error-message" th:errors="*{billingDate}"></div></td>
+				</tr>
+				<tr>
+					<th class="form-title">見積金額</th>
+					<th class="form-required"></th>
+					<td><input type="number" id="quotePrice"
+						th:field="*{quotePrice}" min="0"></td>
+				</tr>
+				<tr>
+					<th class="form-title">受注金額</th>
+					<th class="form-required"></th>
+					<td><input type="number" id="orderPrice"
+						th:field="*{orderPrice}" min="0"></td>
+				</tr>
+				<tr>
+					<th class="form-title">ステータス</th>
+					<th class="form-required"></th>
+					<td><select id="statusId" th:field="*{statusId}">
+							<!--/* orderModifyFormのフィールド statusId が status.statusIdに一致する場合に selected 付与 */-->
+							<option th:each="status : ${statusList}"
+								th:value="${status.statusId}" th:text="${status.statusName}"
+								th:selected="${status.statusId}"></option>
+					</select></td>
+				</tr>
+				<tr>
+					<th class="form-title">備考</th>
+					<th class="form-required"></th>
+					<td><textarea id="orderRemarks" th:field="*{orderRemarks}"
+							name="kanso" cols="40" rows="4" maxlength="20"></textarea></td>
+				</tr>
+			</table>
+			<div class="btn-area-center">
+				<input type="submit" value="確認" class="btn"> <input
+					class="back" type="button" value="戻る" onclick="history.back();">
+			</div>
+		</form>
+	</div>
 </body>
 </html>

@@ -29,7 +29,7 @@
           <td><input type="text" id="orderDate" th:field="*{orderDate}"
             placeholder="YYYY/MM/DD">
           <div th:if="${#fields.hasErrors('orderDate')}"
-              class="error_message" th:errors="*{orderDate}"></div></td>
+              class="error-message" th:errors="*{orderDate}"></div></td>
         </tr>
         <tr>
           <th class="form-title">S番号</th>
@@ -42,7 +42,7 @@
           <th class="form-required">*</th>
           <td><input type="text" id="orderName" th:field="*{orderName}">
           <div th:if="${#fields.hasErrors('orderName')}"
-              class="error_message" th:errors="*{orderName}"></div></td>
+              class="error-message" th:errors="*{orderName}"></div></td>
         </tr>
         <tr>
           <th class="form-title">数量/単位</th>
@@ -55,19 +55,23 @@
           <th class="form-title">納入指定日</th>
           <th class="form-required"></th>
           <td><input type="text" id="deliverySpecifiedDate"
-            th:field="*{deliverySpecifiedDate}" placeholder="YYYY/MM/DD"></td>
+            th:field="*{deliverySpecifiedDate}" placeholder="YYYY/MM/DD">
+                      <div th:if="${#fields.hasErrors('deliverySpecifiedDate')}"
+              class="error-message" th:errors="*{deliverySpecifiedDate}"></div></td>
         </tr>
         <tr>
           <th class="form-title">納入日</th>
           <th class="form-required"></th>
           <td><input type="text" id="deliveryDate"
-            th:field="*{deliveryDate}" placeholder="YYYY/MM/DD"></td>
+            th:field="*{deliveryDate}" placeholder="YYYY/MM/DD"><div th:if="${#fields.hasErrors('deliveryDate')}"
+              class="error-message" th:errors="*{deliveryDate}"></div></td>
         </tr>
         <tr>
           <th class="form-title">請求日</th>
           <th class="form-required"></th>
           <td><input type="text" id="billingDate"
-            th:field="*{billingDate}" placeholder="YYYY/MM/DD"></td>
+            th:field="*{billingDate}" placeholder="YYYY/MM/DD"><div th:if="${#fields.hasErrors('billingDate')}"
+              class="error-message" th:errors="*{billingDate}"></div></td>
         </tr>
         <tr>
           <th class="form-title">見積金額</th>

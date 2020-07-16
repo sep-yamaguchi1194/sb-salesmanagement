@@ -40,3 +40,7 @@ table th {
 .back {
 	margin-left: 20px;
 }
+
+.error-message {
+	color: #f00;
+}

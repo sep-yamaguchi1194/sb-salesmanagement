@@ -2,14 +2,22 @@ package sep.salesmanagement.yt.form;
 
 import java.io.Serializable;
 
+import javax.validation.GroupSequence;
+import javax.validation.constraints.NotEmpty;
+
 import lombok.Data;
-import sep.salesmanagement.yt.form.OrderAddForm.Group1;
-import sep.salesmanagement.yt.form.OrderAddForm.Group2;
 import sep.salesmanagement.yt.validation.CustomPattern;
 import sep.salesmanagement.yt.validation.ExistsDate;
 
 @Data
 public class OrderModifyForm implements Serializable{
+
+    public interface Group1 {}
+    public interface Group2 {}
+
+    @GroupSequence({Group1.class,Group2.class})
+    public interface All {}
+
     private int orderId;
     private int customerId;
 
@@ -17,6 +25,8 @@ public class OrderModifyForm implements Serializable{
     @ExistsDate(groups = Group2.class, message = "[${validatedValue}]は存在しない日付です。")
     private String orderDate;
     private String orderSNumber;
+
+    @NotEmpty(groups = Group1.class, message = "件名は必須項目です")
     private String orderName;
     private int orderQuantity;
     private String unitName;
