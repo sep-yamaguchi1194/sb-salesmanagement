@@ -3,6 +3,9 @@ package sep.salesmanagement.yt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +23,7 @@ import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.service.SalesManagementService;
+import sep.salesmanagement.yt.wrapper.PageWrapper;
 
 @Controller
 public class SalesManagementController {
@@ -27,8 +31,17 @@ public class SalesManagementController {
     SalesManagementService salesManagementService;
 
     @GetMapping(value = "/salesmanagement/order_list")
-    public String displayOrderList(Model model) {
-    	//Customer Entity List
+    public String displayOrderList(@PageableDefault(page = 0, size = 10)Pageable pageable, Model model) {
+        Page<Order> orderPage;
+        PageWrapper<Order> page;
+
+        orderPage = salesManagementService.showOrders(pageable);
+        page = new PageWrapper<Order>(orderPage, "/salesmanagement/order_list");
+
+        model.addAttribute("page", page);
+        model.addAttribute("orders", page.getContent());
+
+        //Customer Entity List
         List<Customer> customerList = salesManagementService.showCustomer();
         model.addAttribute("customerList", customerList);
 
@@ -36,9 +49,11 @@ public class SalesManagementController {
         List<Status> statusList = salesManagementService.showStatus();
         model.addAttribute("statusList", statusList);
 
+        /*
         //Order Entity List
         List<Order> orderList = salesManagementService.showOrder();
         model.addAttribute("orderList", orderList);
+        */
         return "salesmanagement/order_list";
     }
 
