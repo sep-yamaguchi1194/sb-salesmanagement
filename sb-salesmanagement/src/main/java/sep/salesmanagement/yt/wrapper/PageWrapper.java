@@ -14,13 +14,17 @@ public class PageWrapper<T> {
     private List<PageItem> items;
     private int currentNumber;
     private String url;
-    private String customer;
-    private String status;
     private String orderName;
+    private String orderCustomerId;
+    private String orderStatusId;
 
-    public PageWrapper(Page<T> page, String url) {
+
+    public PageWrapper(Page<T> page, String url, String orderName, String orderCustomerId, String orderStatusId) {
         this.page = page;
         this.url = url;
+        this.orderName = orderName;
+        this.orderCustomerId = orderCustomerId;
+        this.orderStatusId = orderStatusId;
         items = new ArrayList<PageItem>();
 
         currentNumber = page.getNumber() + 1;
@@ -54,20 +58,20 @@ public class PageWrapper<T> {
         this.url = url;
     }
 
-    public String getCustomer() {
-        return customer;
+    public String getOrderCustomerId() {
+        return orderCustomerId;
     }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    public void setOrderCustomerId(String orderCustomerId) {
+        this.orderCustomerId = orderCustomerId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getOrderStatusId() {
+        return orderStatusId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setOrderStatusId(String orderStatusId) {
+        this.orderStatusId = orderStatusId;
     }
 
     public String getOrderName() {

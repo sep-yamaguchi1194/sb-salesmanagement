@@ -1,26 +1,24 @@
-/**
- *
- */
-
 $(function() {
-	//#statusidの全optionを保持する変数
-	var $status = $("#statusid");
+	//#orderStatusIdの全optionを保持する変数
+	var $status = $("#orderStatusId");
 	var original = $status.html();
 
-	var selectedCustomerIdVal = $("#customerid").val();
+	var selectedOrderCustomerIdVal = $("#orderCustomerId").val();
 
-	if(selectedCustomerIdVal != "") {
-		updateStatusId(selectedCustomerIdVal);
+	var changedOrderStatusIdVal;
+
+	if(selectedOrderCustomerIdVal != "") {
+		updateOrderStatusId(selectedOrderCustomerIdVal);
 	}
 
-	//#customerid が変更されたときのトリガーポイント
-	$("#customerid").change(function() {
-		var changedCustomerIdVal = $(this).val();
-		updateStatusId(changedCustomerIdVal);
+	//#orderCustomerIdが変更されたときのトリガーポイント
+	$("#orderCustomerId").change(function() {
+		var changedOrderCustomerIdVal = $(this).val();
+		updateOrderStatusId(changedOrderCustomerIdVal);
 	});
 
-	//#customeridの値と#statusidの<option>のdata-val属性が一致しないものを削除するメソッド
-	function updateStatusId(val) {
+	//#orderCustomerIdの値と#orderStatusIdの<option>のdata-val属性が一致しないものを削除するメソッド
+	function updateOrderStatusId(val) {
 		$status.html(original).find("option").each(function() {
 			var statusIdDataVal = $(this).data("val");
 			if(val != statusIdDataVal) {
@@ -34,4 +32,5 @@ $(function() {
 			$status.removeAttr("disabled");
 		}
 	}
+
 });

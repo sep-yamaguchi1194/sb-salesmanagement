@@ -5,12 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
@@ -36,6 +42,42 @@ public class SalesManagementService {
     public Page<Order> showOrders(Pageable pageable) {
         return orderRepository.findByOrderIsDeleted("0", pageable);
     }
+
+    //検索用メソッド
+    public Page<Order> searchOrders(String orderName, String orderCustomerId, String orderStatusId, Pageable pageable) {
+    	Specification<Order> spec = Specification.where(orderNameContains(orderName))
+    			.and(orderCustomerIdEquals(orderCustomerId))
+    			.and(orderStatusIdEquals(orderStatusId));
+    	return orderRepository.findAll(spec, pageable);
+    }
+
+    //Specification
+	private Specification<Order> orderNameContains(String orderName) {
+		return StringUtils.isEmpty(orderName) ? null : new Specification<Order>() {
+			@Override
+			public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				return cb.like(root.get("orderName"), "%" + orderName + "%");
+			}
+		};
+	}
+
+	private Specification<Order> orderCustomerIdEquals(String orderCustomerId) {
+		return StringUtils.isEmpty(orderCustomerId) ? null : new Specification<Order>() {
+			@Override
+			public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				return cb.equal(root.get("orderCustomerId"), orderCustomerId);
+			}
+		};
+	}
+
+	private Specification<Order> orderStatusIdEquals(String orderStatusId) {
+		return StringUtils.isEmpty(orderStatusId) ? null : new Specification<Order>() {
+			@Override
+			public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				return cb.equal(root.get("orderStatusId"), orderStatusId);
+			}
+		};
+	}
 
     public List<Order> showOrder() {
         return orderRepository.findAll();
