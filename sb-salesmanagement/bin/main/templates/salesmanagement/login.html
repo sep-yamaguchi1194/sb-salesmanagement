@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>製造部売上管理システム</title>
 <link rel="stylesheet" href="/css/sb-salesmanagement.css">
 </head>
 <body>
-  <h1>製造部売上管理システム：ログイン</h1>
+	<h1>製造部売上管理システム：ログイン</h1>
+	<form th:action="@{/salesmanagement/login}" th:method="post">
+		<table>
+			<tr>
+				<th>User Name</th>
+				<td><input type="text" name="username"></td>
+			</tr>
+			<tr>
+				<th>User Pass</th>
+				<td><input type="password" name="password"></td>
+			</tr>
+		</table>
+		<input type="submit" value="ログイン" class="btn">
+	</form>
 </body>
 </html>
