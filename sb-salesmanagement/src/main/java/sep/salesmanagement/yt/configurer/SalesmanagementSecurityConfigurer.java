@@ -3,32 +3,40 @@ package sep.salesmanagement.yt.configurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import sep.salesmanagement.yt.service.SalesManagementUserDetailService;
 
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdapter {
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        //ハッシュ化無し(非推奨)
-        return NoOpPasswordEncoder.getInstance();
+    private SalesManagementUserDetailService userService;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setSalesManagementUserDetailService(SalesManagementUserDetailService userService) {
+        this.userService = userService;
     }
 
     @Autowired
-    private SalesManagementUserDetailService userService;
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
+    @Bean
     @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -59,8 +67,9 @@ public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdap
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
+            .eraseCredentials(true)
             .userDetailsService(userService)
-            .passwordEncoder(passwordEncoder());
+            .passwordEncoder(passwordEncoder);
     }
 
     /*
