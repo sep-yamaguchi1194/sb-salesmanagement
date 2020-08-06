@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>製造部売上管理システム</title>
+<link rel="stylesheet" href="/css/sb-salesmanagement.css">
+</head>
+<body>
+  <h1>製造部売上管理システム：ユーザー新規登録</h1>
+  <form th:action="@{/salesmanagement/signup_confirm}"
+    th:object="${signupForm}" th:method="post">
+    <table>
+      <tr>
+        <th>User Name</th>
+        <td><input type="text" name="username" th:field="*{username}"></td>
+      </tr>
+      <tr>
+        <th>User Pass</th>
+        <td><input type="text" name="password" th:field="*{password}"></td>
+      </tr>
+      <tr>
+        <th>User Roles</th>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <input id="roles_1" class="custom-control-input" type="checkbox"
+              name="roles" value="ROLE_USER" th:field="*{roles}"> <label
+              for="roles_1" class="custom-control-label">ROLE_USER</label>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input id="roles_2" class="custom-control-input" type="checkbox"
+              name="roles" value="ROLE_ADMIN" th:field="*{roles}"> <label
+              for="roles_2" class="custom-control-label">ROLE_ADMIN</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <input type="submit" value="新規登録" class="btn">
+  </form>
+</body>
+</html>

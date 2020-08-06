@@ -3,7 +3,7 @@ package sep.salesmanagement.yt.configurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,22 +17,25 @@ import sep.salesmanagement.yt.service.SalesManagementUserDetailService;
 @Configuration
 @EnableWebSecurity
 public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdapter {
-	@Bean
+    @Bean
     PasswordEncoder passwordEncoder() {
         //ハッシュ化無し(非推奨)
         return NoOpPasswordEncoder.getInstance();
     }
 
-	@Override
-	public void configure(WebSecurity webSecurity) throws Exception {
+    @Autowired
+    private SalesManagementUserDetailService userService;
 
-	}
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
 
-	@Override
+    }
+
+    @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
         //未ログイン時でもアクセスできるURIの指定
-                .mvcMatchers("/salesmanagement/login").permitAll()
+                .mvcMatchers("/salesmanagement/login","/salesmanagement/signup", "/salesmanagement/signup_confirm").permitAll()
         //CSS, JavaScriptファイルのアクセス許可
                 .antMatchers("/css/**","/js/**").permitAll()
         //未ログイン時のログインページ以外へのアクセスを許可しない
@@ -54,9 +57,17 @@ public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdap
 
     }
 
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .userDetailsService(userService)
+            .passwordEncoder(passwordEncoder());
+    }
+
+    /*
     protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
-    	@Autowired
-    	SalesManagementUserDetailService salesManagementUserDetailService;
+        @Autowired
+        SalesManagementUserDetailService salesManagementUserDetailService;
 
     }
+    */
 }

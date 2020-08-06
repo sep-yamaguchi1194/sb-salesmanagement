@@ -23,6 +23,8 @@ import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.form.OrderSearchForm;
+import sep.salesmanagement.yt.form.SignupForm;
+import sep.salesmanagement.yt.service.AccountService;
 import sep.salesmanagement.yt.service.SalesManagementService;
 import sep.salesmanagement.yt.wrapper.PageWrapper;
 
@@ -31,15 +33,33 @@ public class SalesManagementController {
     @Autowired
     SalesManagementService salesManagementService;
 
+    //問題個所
+    AccountService accountService;
+
     @GetMapping(value = "/salesmanagement/login")
     public String displayLogin(Model model) {
         return "salesmanagement/login";
     }
 
+    @GetMapping(value = "/salesmanagement/signup")
+    public String displaySignup(Model model) {
+        SignupForm signupForm = new SignupForm();
+        model.addAttribute("signupForm", signupForm);
+        return "salesmanagement/signup";
+    }
+
+    @PostMapping(value = "/salesmanagement/signup_confirm")
+    public String createNewAccount(@ModelAttribute(name = "signupForm")SignupForm signupForm, Model model) {
+        /**
+         * 問題個所 Null Pointer Exception
+         */
+        accountService.register(signupForm.getUsername(), signupForm.getPassword(), signupForm.getRoles());
+        return "redirect:/salesmanagement/login";
+    }
+
     @GetMapping(value = "/salesmanagement/order_list")
     public String displayOrderList(@ModelAttribute("orderSearchForm") OrderSearchForm orderSearchForm,
             @PageableDefault(page = 0, size = 10) Pageable pageable, Model model) {
-
 
         /*
          * ,
@@ -55,7 +75,7 @@ public class SalesManagementController {
         //orderPage = salesManagementService.showOrders(pageable);
         orderPage = salesManagementService.searchOrders(orderSearchForm.getOrderName(),
                 orderSearchForm.getOrderCustomerId(), orderSearchForm.getOrderStatusId(), pageable);
-        page = new PageWrapper<Order>(orderPage, "/salesmanagement/order_list",orderSearchForm.getOrderName(),
+        page = new PageWrapper<Order>(orderPage, "/salesmanagement/order_list", orderSearchForm.getOrderName(),
                 orderSearchForm.getOrderCustomerId(), orderSearchForm.getOrderStatusId());
 
         model.addAttribute("page", page);
