@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,7 @@ import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.form.OrderSearchForm;
 import sep.salesmanagement.yt.form.SignupForm;
+import sep.salesmanagement.yt.repository.UserRepository;
 import sep.salesmanagement.yt.service.AccountService;
 import sep.salesmanagement.yt.service.SalesManagementService;
 import sep.salesmanagement.yt.wrapper.PageWrapper;
@@ -33,14 +36,25 @@ public class SalesManagementController {
     @Autowired
     SalesManagementService salesManagementService;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     //問題個所
     AccountService accountService;
 
+    //ログイン画面
     @GetMapping(value = "/salesmanagement/login")
     public String displayLogin(Model model) {
         return "salesmanagement/login";
     }
 
+    //ユーザー新規登録画面
     @GetMapping(value = "/salesmanagement/signup")
     public String displaySignup(Model model) {
         SignupForm signupForm = new SignupForm();
@@ -53,6 +67,7 @@ public class SalesManagementController {
         /**
          * 問題個所 Null Pointer Exception
          */
+    	accountService = new AccountService(userRepository, passwordEncoder, authenticationManager);
         accountService.register(signupForm.getUsername(), signupForm.getPassword(), signupForm.getRoles());
         return "redirect:/salesmanagement/login";
     }
