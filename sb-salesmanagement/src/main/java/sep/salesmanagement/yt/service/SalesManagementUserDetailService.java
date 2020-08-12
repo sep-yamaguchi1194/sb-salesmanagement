@@ -20,9 +20,9 @@ public class SalesManagementUserDetailService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // TODO 自動生成されたメソッド・スタブ
-        User user = userRepository.findByName(username).get();
+        User user = userRepository.findByEmail(email).get();
         LoginUser loginUser = new LoginUser(user);
         return loginUser;
     }

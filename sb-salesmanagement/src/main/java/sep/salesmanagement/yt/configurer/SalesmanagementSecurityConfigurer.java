@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import sep.salesmanagement.yt.service.SalesManagementUserDetailService;
 
@@ -37,8 +40,8 @@ public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdap
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    	return new BCryptPasswordEncoder();
+        //passwordのBCryptPasswordEncoderを使用
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -60,11 +63,17 @@ public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdap
         //ログインページURI
                 .loginPage("/salesmanagement/login")
                 //ログインページの<input>のname属性
-                .usernameParameter("username")
+                .usernameParameter("email")
                 .passwordParameter("password")
         //ログイン認証成功時のデフォルト遷移先URI
-                .defaultSuccessUrl("/salesmanagement/order_list");
-
+                .defaultSuccessUrl("/salesmanagement/order_list")
+            .and()
+                .logout()
+                .logoutUrl("/salesmanagement/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                //Cookie削除
+                .deleteCookies("JSESSIONID")
+                .permitAll();
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -74,6 +83,16 @@ public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdap
             .passwordEncoder(passwordEncoder);
     }
 
+    private LogoutSuccessHandler logoutSuccessHandler = (request, response, auth) -> {
+        if(response.isCommitted()) {
+            return;
+        }
+        if(request.isRequestedSessionIdValid()) {
+            request.changeSessionId();
+        }
+        RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+        redirectStrategy.sendRedirect(request, response, "/salesmanagement/login");
+    };
     /*
     protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
         @Autowired

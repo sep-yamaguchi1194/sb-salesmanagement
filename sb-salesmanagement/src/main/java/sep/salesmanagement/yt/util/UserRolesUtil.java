@@ -17,7 +17,7 @@ public class UserRolesUtil {
     return UserRoles.lookup(tmp).getValue();
   });
 
-  /* 配列をカンマ区切りの文字列へ */
+  // String[]→カンマ区切りのString
   public static String joining(String[] roles) {
     if (roles == null || roles.length == 0) {
       return null;
@@ -27,7 +27,7 @@ public class UserRolesUtil {
         .collect(Collectors.joining(","));
   }
 
-  /* カンマ区切りの文字列を配列へ */
+  //カンマ区切りのString→String[]
   public static String[] toArray(String joinedRoles) {
     if (joinedRoles == null || joinedRoles.isEmpty()) {
       return null;
@@ -37,7 +37,7 @@ public class UserRolesUtil {
         .toArray(String[]::new);
   }
 
-  /* カンマ区切りの文字列をSetへ */
+  //カンマ区切りのString→Set型
   public static Set<GrantedAuthority> toSet(String joinedRoles) {
     if (joinedRoles == null || joinedRoles.isEmpty()) {
       return Collections.emptySet();
@@ -48,7 +48,7 @@ public class UserRolesUtil {
         .collect(Collectors.toSet());
   }
 
-  /* コレクションを配列へ */
+  //Collection型→String[]
   public static String[] toArray(Collection<? extends GrantedAuthority> authorities) {
     return authorities.stream()
         .map(GrantedAuthority::getAuthority)

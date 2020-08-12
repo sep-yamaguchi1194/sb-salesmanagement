@@ -12,8 +12,8 @@
     th:object="${signupForm}" th:method="post">
     <table>
       <tr>
-        <th>ユーザー名</th>
-        <td><input type="text" name="username" th:field="*{username}"></td>
+        <th>メールアドレス</th>
+        <td><input type="text" name="email" th:field="*{email}"></td>
       </tr>
       <tr>
         <th>パスワード</th>
@@ -29,8 +29,13 @@
           </div>
           <div class="custom-control custom-checkbox">
             <input id="roles_2" class="custom-control-input" type="checkbox"
+              name="roles" value="ROLE_MANAGER" th:field="*{roles}"> <label
+              for="roles_2" class="custom-control-label">ROLE_MANAGER(管理者)</label>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input id="roles_3" class="custom-control-input" type="checkbox"
               name="roles" value="ROLE_ADMIN" th:field="*{roles}"> <label
-              for="roles_2" class="custom-control-label">ROLE_ADMIN(管理者)</label>
+              for="roles_3" class="custom-control-label">ROLE_ADMIN(管理者)</label>
           </div>
         </td>
       </tr>

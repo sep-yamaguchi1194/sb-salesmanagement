@@ -22,11 +22,11 @@ public class LoginUser implements UserDetails, CredentialsContainer {
     private final User user;
 
     public LoginUser(User user) {
-        if ((Objects.isNull(user.getName()) || "".equals(user.getName()))
+        if ((Objects.isNull(user.getEmail()) || "".equals(user.getEmail()))
                 || (Objects.isNull(user.getPassword()) || "".equals(user.getPassword()))) {
             throw new IllegalArgumentException("Cannot pass null or empty values");
         }
-        this.username = user.getName();
+        this.username = user.getEmail();
         this.password = user.getPassword();
         this.authorities = UserRolesUtil.toSet(user.getRoles());
         this.accountNonExpired = true;

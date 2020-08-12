@@ -45,39 +45,49 @@ public class SalesManagementService {
 
     //検索用メソッド
     public Page<Order> searchOrders(String orderName, String orderCustomerId, String orderStatusId, Pageable pageable) {
-    	Specification<Order> spec = Specification.where(orderNameContains(orderName))
-    			.and(orderCustomerIdEquals(orderCustomerId))
-    			.and(orderStatusIdEquals(orderStatusId));
-    	return orderRepository.findAll(spec, pageable);
+        Specification<Order> spec = Specification.where(orderNameContains(orderName))
+                .and(orderCustomerIdEquals(orderCustomerId))
+                .and(orderStatusIdEquals(orderStatusId))
+                .and(orderIsDeletedEquals("0"));
+        return orderRepository.findAll(spec, pageable);
     }
 
     //Specification
-	private Specification<Order> orderNameContains(String orderName) {
-		return StringUtils.isEmpty(orderName) ? null : new Specification<Order>() {
-			@Override
-			public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.like(root.get("orderName"), "%" + orderName + "%");
-			}
-		};
-	}
+    private Specification<Order> orderNameContains(String orderName) {
+        return StringUtils.isEmpty(orderName) ? null : new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.like(root.get("orderName"), "%" + orderName + "%");
+            }
+        };
+    }
 
-	private Specification<Order> orderCustomerIdEquals(String orderCustomerId) {
-		return StringUtils.isEmpty(orderCustomerId) ? null : new Specification<Order>() {
-			@Override
-			public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.equal(root.get("orderCustomerId"), orderCustomerId);
-			}
-		};
-	}
+    private Specification<Order> orderCustomerIdEquals(String orderCustomerId) {
+        return StringUtils.isEmpty(orderCustomerId) ? null : new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(root.get("orderCustomerId"), orderCustomerId);
+            }
+        };
+    }
 
-	private Specification<Order> orderStatusIdEquals(String orderStatusId) {
-		return StringUtils.isEmpty(orderStatusId) ? null : new Specification<Order>() {
-			@Override
-			public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.equal(root.get("orderStatusId"), orderStatusId);
-			}
-		};
-	}
+    private Specification<Order> orderStatusIdEquals(String orderStatusId) {
+        return StringUtils.isEmpty(orderStatusId) ? null : new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(root.get("orderStatusId"), orderStatusId);
+            }
+        };
+    }
+
+    private Specification<Order> orderIsDeletedEquals(String orderIsDeleted) {
+        return StringUtils.isEmpty(orderIsDeleted) ? null : new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(root.get("orderIsDeleted"), orderIsDeleted);
+            }
+        };
+    }
 
     public List<Order> showOrder() {
         return orderRepository.findAll();

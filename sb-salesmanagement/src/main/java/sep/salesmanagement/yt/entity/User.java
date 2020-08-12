@@ -25,8 +25,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "user_email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "user_password", nullable = false)
     private String password;
@@ -59,9 +59,9 @@ public class User {
         this.updateAt = LocalDateTime.now();
     }
 
-    public static User of(String name, String encodedPassword, String[] roles) {
+    public static User of(String email, String encodedPassword, String[] roles) {
         User user = new User();
-        user.setName(name);
+        user.setEmail(email);
         user.setPassword(encodedPassword);
         String joinedRoles = UserRolesUtil.joining(roles);
         user.setRoles(joinedRoles);

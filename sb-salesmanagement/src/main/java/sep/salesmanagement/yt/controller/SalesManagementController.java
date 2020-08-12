@@ -48,6 +48,13 @@ public class SalesManagementController {
     //問題個所
     AccountService accountService;
 
+    //AccountService Setter
+    @Autowired
+    public void setAccountService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager) {
+        this.accountService = new AccountService(userRepository, passwordEncoder, authenticationManager);
+    }
+
     //ログイン画面
     @GetMapping(value = "/salesmanagement/login")
     public String displayLogin(Model model) {
@@ -63,12 +70,13 @@ public class SalesManagementController {
     }
 
     @PostMapping(value = "/salesmanagement/signup_confirm")
-    public String createNewAccount(@ModelAttribute(name = "signupForm")SignupForm signupForm, Model model) {
-        /**
-         * 問題個所 Null Pointer Exception
-         */
-    	accountService = new AccountService(userRepository, passwordEncoder, authenticationManager);
-        accountService.register(signupForm.getUsername(), signupForm.getPassword(), signupForm.getRoles());
+    public String createNewAccount(@ModelAttribute(name = "signupForm") @Validated SignupForm signupForm,
+            BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("signupForm", signupForm);
+            return "salesmanagement/signup";
+        }
+        accountService.register(signupForm.getEmail(), signupForm.getPassword(), signupForm.getRoles());
         return "redirect:/salesmanagement/login";
     }
 

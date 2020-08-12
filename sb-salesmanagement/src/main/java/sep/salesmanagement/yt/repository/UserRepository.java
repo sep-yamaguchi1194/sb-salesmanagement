@@ -9,5 +9,5 @@ import sep.salesmanagement.yt.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByName(String name);
+    Optional<User> findByEmail(String email);
 }
