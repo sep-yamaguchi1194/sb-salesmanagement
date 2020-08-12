@@ -8,7 +8,7 @@ import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import sep.salesmanagement.yt.util.UserRolesUtil;
+import sep.salesmanagement.yt.roles.UserRolesUtil;
 
 public class LoginUser implements UserDetails, CredentialsContainer {
 

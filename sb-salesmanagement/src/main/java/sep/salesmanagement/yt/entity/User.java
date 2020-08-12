@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.ToString;
-import sep.salesmanagement.yt.util.UserRolesUtil;
+import sep.salesmanagement.yt.roles.UserRolesUtil;
 
 @Entity
 @Table(name = "tbl_sms_users")

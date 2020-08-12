@@ -1,4 +1,4 @@
-package sep.salesmanagement.yt.util;
+package sep.salesmanagement.yt.roles;
 
 import java.util.Arrays;
 
