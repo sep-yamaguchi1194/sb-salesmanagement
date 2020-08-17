@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org">
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>製造部売上管理システム</title>
@@ -12,6 +13,7 @@
     <button class="btn indigo accent-4 text-white btn-block my-4"
       type="submit">Sign out</button>
   </form>
+  <div sec:authorize="hasRole('ROLE_ADMIN')">管理者ページ</div>
   <h1>製造部売上管理システム：案件一覧</h1>
   <div>
     <button class="add"

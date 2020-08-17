@@ -9,11 +9,11 @@ import lombok.Data;
 
 @Data
 public class SignupForm implements Serializable {
-    @NotEmpty
+    @NotEmpty(message="メールアドレスは入力必須です")
     @Email(message="メールアドレスの形式で入力してください")
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message="パスワードは入力必須です")
     private String password;
 
     private String[] roles;
