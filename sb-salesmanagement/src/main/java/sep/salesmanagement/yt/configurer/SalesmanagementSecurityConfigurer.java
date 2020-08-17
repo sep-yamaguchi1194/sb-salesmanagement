@@ -51,6 +51,7 @@ public class SalesmanagementSecurityConfigurer extends WebSecurityConfigurerAdap
                 .mvcMatchers("/salesmanagement/login","/salesmanagement/signup", "/salesmanagement/signup_confirm").permitAll()
         //CSS, JavaScriptファイルのアクセス許可
                 .antMatchers("/css/**","/js/**").permitAll()
+                .antMatchers("/salesmanagement/user_create").hasRole("ADMIN")
         //未ログイン時のログインページ以外へのアクセスを許可しない
                 .anyRequest().authenticated()
                 .and()

@@ -26,9 +26,10 @@
         <td>
           <div class="custom-control custom-checkbox">
             <input id="roles_1" class="custom-control-input" type="checkbox"
-              name="roles" value="ROLE_USER" th:field="*{roles}"> <label
-              for="roles_1" class="custom-control-label">ROLE_USER(一般ユーザー)</label>
+              name="roles" value="ROLE_USER" th:field="*{roles}" th:checked="true" onclick="return false;"> <label
+              for="roles_1" class="custom-control-label">一般ユーザー</label>
           </div>
+          <!--
           <div class="custom-control custom-checkbox">
             <input id="roles_2" class="custom-control-input" type="checkbox"
               name="roles" value="ROLE_MANAGER" th:field="*{roles}"> <label
@@ -39,6 +40,7 @@
               name="roles" value="ROLE_ADMIN" th:field="*{roles}"> <label
               for="roles_3" class="custom-control-label">ROLE_ADMIN(管理者)</label>
           </div>
+          -->
         </td>
       </tr>
     </table>

@@ -8,7 +8,7 @@
 </head>
 <body>
   <h1>製造部売上管理システム：ユーザー新規登録</h1>
-  <form th:action="@{/salesmanagement/signup_confirm}"
+  <form th:action="@{/salesmanagement/user_create_confirm}"
     th:object="${signupForm}" th:method="post">
     <table>
       <tr>
@@ -26,21 +26,19 @@
         <td>
           <div class="custom-control custom-checkbox">
             <input id="roles_1" class="custom-control-input" type="checkbox"
-              name="roles" value="ROLE_USER" th:field="*{roles}" th:checked="true" onclick="return false;"> <label
+              name="roles" value="ROLE_USER" th:field="*{roles}"> <label
               for="roles_1" class="custom-control-label">一般ユーザー</label>
           </div>
-          <!--
           <div class="custom-control custom-checkbox">
             <input id="roles_2" class="custom-control-input" type="checkbox"
               name="roles" value="ROLE_MANAGER" th:field="*{roles}"> <label
-              for="roles_2" class="custom-control-label">ROLE_MANAGER(管理者)</label>
+              for="roles_2" class="custom-control-label">マネージャー</label>
           </div>
           <div class="custom-control custom-checkbox">
             <input id="roles_3" class="custom-control-input" type="checkbox"
               name="roles" value="ROLE_ADMIN" th:field="*{roles}"> <label
-              for="roles_3" class="custom-control-label">ROLE_ADMIN(管理者)</label>
+              for="roles_3" class="custom-control-label">管理者</label>
           </div>
-          -->
         </td>
       </tr>
     </table>

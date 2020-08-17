@@ -21,11 +21,13 @@ import org.springframework.util.StringUtils;
 import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
+import sep.salesmanagement.yt.entity.User;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.repository.CustomerRepository;
 import sep.salesmanagement.yt.repository.OrderRepository;
 import sep.salesmanagement.yt.repository.StatusRepository;
+import sep.salesmanagement.yt.repository.UserRepository;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -38,6 +40,9 @@ public class SalesManagementService {
 
     @Autowired
     StatusRepository statusRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public Page<Order> showOrders(Pageable pageable) {
         return orderRepository.findByOrderIsDeleted("0", pageable);
@@ -103,6 +108,10 @@ public class SalesManagementService {
 
     public List<Status> showStatus() {
         return statusRepository.findAll();
+    }
+
+    public List<User> showUser() {
+    	return userRepository.findAll();
     }
 
     public List<Status> showSpecificCustomerStatuses(int customerId) {

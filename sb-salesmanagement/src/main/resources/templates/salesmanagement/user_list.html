@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>製造部門売上管理システム：ユーザー一覧</title>
 <link rel="stylesheet" href="/css/sb-salesmanagement.css">
 </head>
 <body>
-
+	<h1>製造部売上管理システム：ユーザー一覧</h1>
+	<table class="table-user-list">
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>メールアドレス</th>
+				<th>権限</th>
+				<th>作成日時</th>
+				<th>更新日時</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${userList}" th:object="${user}">
+			<td th:text="*{id}"></td>
+			<td th:text="*{email}"></td>
+			<td th:text="*{roles}"></td>
+			<td th:text="*{#temporals.format(createAt, 'yyyy/MM/dd HH:mm')}"></td>
+			<td th:text="*{#temporals.format(updateAt, 'yyyy/MM/dd HH:mm')}"></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>

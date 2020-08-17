@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
+import sep.salesmanagement.yt.entity.User;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.form.OrderSearchForm;
@@ -65,6 +66,8 @@ public class SalesManagementController {
     @GetMapping(value = "/salesmanagement/signup")
     public String displaySignup(Model model) {
         SignupForm signupForm = new SignupForm();
+        String[] userRole = {"ROLE_USER"};
+        signupForm.setRoles(userRole);
         model.addAttribute("signupForm", signupForm);
         return "salesmanagement/signup";
     }
@@ -80,9 +83,38 @@ public class SalesManagementController {
         return "redirect:/salesmanagement/login";
     }
 
-    @GetMapping(value = "/salesmanagement/order_list")
+    //ユーザー新規登録画面(管理者権限必須)
+    @GetMapping(value = "/salesmanagement/user_create")
+    public String displayUserCreate(Model model) {
+    	SignupForm signupForm = new SignupForm();
+    	model.addAttribute("signupForm", signupForm);
+    	return "salesmanagement/user_create";
+    }
+
+    @PostMapping(value = "/salesmanagement/user_create_confirm")
+    public String createNewAccountAsAdmin(@ModelAttribute(name = "signupForm") @Validated SignupForm signupForm,
+            BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("signupForm", signupForm);
+            return "salesmanagement/user_create";
+        }
+        accountService.register(signupForm.getEmail(), signupForm.getPassword(), signupForm.getRoles());
+        return "redirect:/salesmanagement/order_list";
+    }
+
+    //ユーザー一覧画面
+    @GetMapping(value = "/salesmanagement/user_list")
+    public String displayUserList(Model model) {
+    	List<User> userList = salesManagementService.showUser();
+    	model.addAttribute("userList", userList);
+    	return "salesmanagement/user_list";
+    }
+
+    @GetMapping(value = {"/salesmanagement/order_list", "/salesmanagement"})
     public String displayOrderList(@ModelAttribute("orderSearchForm") OrderSearchForm orderSearchForm,
             @PageableDefault(page = 0, size = 10) Pageable pageable, Model model) {
+    	/*OrderSearchForm自体はModel追加しなくてもエラー出ない？*/
+
 
         /*
          * ,
