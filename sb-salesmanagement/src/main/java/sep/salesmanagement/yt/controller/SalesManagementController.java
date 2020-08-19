@@ -86,9 +86,9 @@ public class SalesManagementController {
     //ユーザー新規登録画面(管理者権限必須)
     @GetMapping(value = "/salesmanagement/user_create")
     public String displayUserCreate(Model model) {
-    	SignupForm signupForm = new SignupForm();
-    	model.addAttribute("signupForm", signupForm);
-    	return "salesmanagement/user_create";
+        SignupForm signupForm = new SignupForm();
+        model.addAttribute("signupForm", signupForm);
+        return "salesmanagement/user_create";
     }
 
     @PostMapping(value = "/salesmanagement/user_create_confirm")
@@ -105,15 +105,15 @@ public class SalesManagementController {
     //ユーザー一覧画面
     @GetMapping(value = "/salesmanagement/user_list")
     public String displayUserList(Model model) {
-    	List<User> userList = salesManagementService.showUser();
-    	model.addAttribute("userList", userList);
-    	return "salesmanagement/user_list";
+        List<User> userList = salesManagementService.showUser();
+        model.addAttribute("userList", userList);
+        return "salesmanagement/user_list";
     }
 
     @GetMapping(value = {"/salesmanagement/order_list", "/salesmanagement"})
     public String displayOrderList(@ModelAttribute("orderSearchForm") OrderSearchForm orderSearchForm,
-            @PageableDefault(page = 0, size = 10) Pageable pageable, Model model) {
-    	/*OrderSearchForm自体はModel追加しなくてもエラー出ない？*/
+            @PageableDefault(page = 0, size = 10, sort = "orderCustomerId") Pageable pageable, Model model) {
+        /*OrderSearchForm自体はModel追加しなくてもエラー出ない？*/
 
 
         /*
