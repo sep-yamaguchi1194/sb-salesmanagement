@@ -118,7 +118,7 @@
     </thead>
     <tbody>
       <tr th:each="order : ${orders}" th:object="${order}">
-        <td class="center" th:text="${orderStat.count}"></td>
+        <td class="center" th:text="${orderStat.count+(page.number-1)*10}"></td>
         <td th:text="*{customer.customerName}"></td>
         <!--/* 「受注日」 表示 */-->
         <td

@@ -24,8 +24,8 @@
       <td th:text="*{id}"></td>
       <td th:text="*{email}"></td>
       <td th:text="*{roles}"></td>
-      <td th:text="*{#temporals.format(createAt, 'yyyy/MM/dd')}"></td>
-      <td th:text="*{#temporals.format(updateAt, 'yyyy/MM/dd')}"></td>
+      <td th:text="*{createAt}"></td>
+      <td th:text="*{updateAt}"></td>
       </tr>
     </tbody>
   </table>
