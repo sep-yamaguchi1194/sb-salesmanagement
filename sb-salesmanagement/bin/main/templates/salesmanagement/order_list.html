@@ -10,7 +10,8 @@
 <body class="sms-ol-body">
   <header class="sms-header">
     <p>
-      ログインユーザー:<span sec:authentication="principal.User.email"></span>
+      ログインユーザー:<a th:href="@{/salesmanagement/user_modify}"><span
+        sec:authentication="principal.User.email"></span></a>
     </p>
     <div class="sms-menu-wrapper">
       <div class="signout-div">
@@ -24,6 +25,8 @@
           th:href="@{/salesmanagement/user_create}">ユーザー新規登録</a>/</li>
         <li class="sms-menu-item"><a
           th:href="@{/salesmanagement/user_list}">ユーザー一覧</a>/</li>
+        <li class="sms-menu-item"><a
+          th:href="@{/salesmanagement/download}">ダウンロード</a>/</li>
       </ul>
     </div>
   </header>

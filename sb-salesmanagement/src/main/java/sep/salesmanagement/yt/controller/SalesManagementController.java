@@ -1,12 +1,18 @@
 package sep.salesmanagement.yt.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.csv.CsvGenerator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+
+import sep.salesmanagement.yt.entity.CsvOrder;
 import sep.salesmanagement.yt.entity.Customer;
+import sep.salesmanagement.yt.entity.LoginUser;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.entity.User;
@@ -66,7 +79,7 @@ public class SalesManagementController {
     @GetMapping(value = "/salesmanagement/signup")
     public String displaySignup(Model model) {
         SignupForm signupForm = new SignupForm();
-        String[] userRole = {"ROLE_USER"};
+        String[] userRole = { "ROLE_USER" };
         signupForm.setRoles(userRole);
         model.addAttribute("signupForm", signupForm);
         return "salesmanagement/signup";
@@ -75,7 +88,7 @@ public class SalesManagementController {
     @PostMapping(value = "/salesmanagement/signup_confirm")
     public String createNewAccount(@ModelAttribute(name = "signupForm") @Validated SignupForm signupForm,
             BindingResult result, Model model) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             model.addAttribute("signupForm", signupForm);
             return "salesmanagement/signup";
         }
@@ -94,7 +107,7 @@ public class SalesManagementController {
     @PostMapping(value = "/salesmanagement/user_create_confirm")
     public String createNewAccountAsAdmin(@ModelAttribute(name = "signupForm") @Validated SignupForm signupForm,
             BindingResult result, Model model) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             model.addAttribute("signupForm", signupForm);
             return "salesmanagement/user_create";
         }
@@ -110,11 +123,40 @@ public class SalesManagementController {
         return "salesmanagement/user_list";
     }
 
-    @GetMapping(value = {"/salesmanagement/order_list", "/salesmanagement"})
+    //ユーザー情報編集画面
+    //現状何を編集したらよいのか分からないので、エンドポイントだけ作成
+    @GetMapping(value = "/salesmanagement/user_modify")
+    public String displayUserModify(@AuthenticationPrincipal LoginUser loggedinUser, Model model) {
+        //UserModifyForm userModifyForm = new UserModifyForm(loggedinUser.getUser().getEmail());
+        return "salesmanagement/user_modify";
+    }
+
+    public String getCsvText() throws JsonProcessingException {
+        CsvMapper csvMapper = new CsvMapper();
+        csvMapper.configure(CsvGenerator.Feature.ALWAYS_QUOTE_STRINGS, true);
+        CsvSchema schema = csvMapper.schemaFor(CsvOrder.class).withHeader();
+        List<CsvOrder> csvOrders = new ArrayList<CsvOrder>();
+        List<Order> orders = salesManagementService.showOrder();
+        for (Order order : orders) {
+            csvOrders.add(new CsvOrder(order.getCustomer().getCustomerName(), order.getOrderDate(),
+                    order.getOrderSNumber(), order.getOrderName(), order.getOrderQuantity(), order.getOrderUnitName(),
+                    order.getOrderDeliverySpecifiedDate(), order.getOrderDeliveryDate(), order.getOrderBillingDate(),
+                    order.getOrderQuotePrice(), order.getOrderPrice(), order.getStatus().getStatusName(),
+                    order.getOrderRemarks()));
+        }
+        return csvMapper.writer(schema).writeValueAsString(csvOrders);
+    }
+
+    @GetMapping(value = "/salesmanagement/download")
+    public ResponseEntity<byte[]> downloadCsv() throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<>(getCsvText().getBytes("MS932"), headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = { "/salesmanagement/order_list", "/salesmanagement" })
     public String displayOrderList(@ModelAttribute("orderSearchForm") OrderSearchForm orderSearchForm,
             @PageableDefault(page = 0, size = 10, sort = "orderCustomerId") Pageable pageable, Model model) {
         /*OrderSearchForm自体はModel追加しなくてもエラー出ない？*/
-
 
         /*
          * ,
