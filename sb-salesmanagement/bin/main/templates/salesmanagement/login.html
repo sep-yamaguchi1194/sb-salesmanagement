@@ -10,7 +10,7 @@
 <body>
   <a th:href="@{/salesmanagement/signup}">新規登録</a>
   <h1>製造部売上管理システム：ログイン</h1>
-  <div class="" th:if="${param['error'] != null && session['SPRING_SECURITY_LAST_EXCEPTION'] != null}">
+  <div class="error-message" th:if="${param['error'] != null && session['SPRING_SECURITY_LAST_EXCEPTION'] != null}">
   メールアドレスもしくはパスワードが間違っているか入力されていません。
   </div>
   <form th:action="@{/salesmanagement/login}" th:method="post">

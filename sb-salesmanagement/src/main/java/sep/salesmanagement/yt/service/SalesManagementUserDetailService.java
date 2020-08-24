@@ -18,6 +18,7 @@ public class SalesManagementUserDetailService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    //ログイン時のLoginUserインスタンス作成メソッド
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

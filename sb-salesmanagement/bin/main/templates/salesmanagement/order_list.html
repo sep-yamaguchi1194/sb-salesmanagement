@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
 <head>
 <meta charset="UTF-8">
 <title>製造部売上管理システム</title>
@@ -10,8 +10,7 @@
 <body class="sms-ol-body">
   <header class="sms-header">
     <p>
-      ログインユーザー:<a th:href="@{/salesmanagement/user_modify}"><span
-        sec:authentication="principal.User.email"></span></a>
+      ログインユーザー:<span sec:authentication="principal.User.email"></span>
     </p>
     <div class="sms-menu-wrapper">
       <div class="signout-div">
@@ -25,8 +24,10 @@
           th:href="@{/salesmanagement/user_create}">ユーザー新規登録[管理者用]</a>/</li>
         <li class="sms-menu-item"><a
           th:href="@{/salesmanagement/user_list}">ユーザー一覧</a>/</li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')" class="sms-menu-item"><a
+          th:href="@{/salesmanagement/customer_list}">顧客一覧</a>/</li>
         <li class="sms-menu-item"><a
-          th:href="@{/salesmanagement/download}">ダウンロード[CSV形式]</a>/</li>
+          th:href="@{/salesmanagement/download}">案件一覧ダウンロード[CSV形式]</a>/</li>
       </ul>
     </div>
   </header>

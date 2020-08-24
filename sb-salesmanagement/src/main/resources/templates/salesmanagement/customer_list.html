@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>製造部門売上管理システム：顧客一覧</title>
+<link rel="stylesheet" href="/css/sb-salesmanagement.css">
+</head>
+<body>
+	<h1>製造部売上管理システム：顧客一覧</h1>
+	<table class="table-customer-list">
+		<thead>
+			<tr>
+				<th>顧客ID</th>
+				<th>顧客名</th>
+				<th>編集</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="customer : ${customerList}" th:object="${customer}">
+				<td th:text="*{customerId}"></td>
+				<td th:text="*{customerName}"></td>
+				<td><form action="/salesmanagement/customer_modify"
+						method="post">
+						<input name="customerId" type="hidden" th:value="*{customerId}">
+						<input type="submit" value="編集" class="btn">
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<a th:href="@{/salesmanagement/order_list}">戻る</a>
+</body>
+</html>

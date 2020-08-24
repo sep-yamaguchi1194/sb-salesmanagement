@@ -22,6 +22,7 @@ import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.entity.User;
+import sep.salesmanagement.yt.form.CustomerModifyForm;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.repository.CustomerRepository;
@@ -44,6 +45,7 @@ public class SalesManagementService {
     @Autowired
     UserRepository userRepository;
 
+    //案件一覧表示用メソッド
     public Page<Order> showOrders(Pageable pageable) {
         return orderRepository.findByOrderIsDeleted("0", pageable);
     }
@@ -106,6 +108,10 @@ public class SalesManagementService {
         return customerRepository.findAll();
     }
 
+    public Customer showSelectedCustomer(int customerId) {
+        return customerRepository.findById(customerId).get();
+    }
+
     public List<Status> showStatus() {
         return statusRepository.findAll();
     }
@@ -118,14 +124,6 @@ public class SalesManagementService {
         return statusRepository.findByStatusCustomerId(customerId);
     }
 
-    /**
-     * Customer Entity 取得
-     * @param customerId
-     * @return
-     */
-    public Customer showSelectedCustomer(int customerId) {
-        return customerRepository.findById(customerId).get();
-    }
 
     /**
      * Status Entity 取得
@@ -178,6 +176,12 @@ public class SalesManagementService {
         order.setOrderStatusId(orderModifyForm.getStatusId());
         order.setOrderRemarks(orderModifyForm.getOrderRemarks());
         orderRepository.saveAndFlush(order);
+    }
+
+    public void updateCustomer(CustomerModifyForm customerModifyForm) {
+    	Customer customer = showSelectedCustomer(customerModifyForm.getCustomerId());
+    	customer.setCustomerName(customerModifyForm.getCustomerName());
+    	customerRepository.saveAndFlush(customer);
     }
 
     public void logicalDeleteOrder(int orderId) {

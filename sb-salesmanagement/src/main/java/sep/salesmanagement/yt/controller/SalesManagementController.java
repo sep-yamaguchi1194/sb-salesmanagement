@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +31,10 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 import sep.salesmanagement.yt.entity.CsvOrder;
 import sep.salesmanagement.yt.entity.Customer;
-import sep.salesmanagement.yt.entity.LoginUser;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.entity.User;
+import sep.salesmanagement.yt.form.CustomerModifyForm;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
 import sep.salesmanagement.yt.form.OrderSearchForm;
@@ -59,10 +58,9 @@ public class SalesManagementController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    //問題個所
     AccountService accountService;
 
-    //AccountService Setter
+    //AccountServiceセッター
     @Autowired
     public void setAccountService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager) {
@@ -123,13 +121,14 @@ public class SalesManagementController {
         return "salesmanagement/user_list";
     }
 
+    /*
     //ユーザー情報編集画面
-    //現状何を編集したらよいのか分からないので、エンドポイントだけ作成
     @GetMapping(value = "/salesmanagement/user_modify")
     public String displayUserModify(@AuthenticationPrincipal LoginUser loggedinUser, Model model) {
         //UserModifyForm userModifyForm = new UserModifyForm(loggedinUser.getUser().getEmail());
         return "salesmanagement/user_modify";
     }
+    */
 
     //CSV作成メソッド
     public String getCsvText() throws JsonProcessingException {
@@ -148,25 +147,53 @@ public class SalesManagementController {
         return csvMapper.writer(schema).writeValueAsString(csvOrders);
     }
 
+    //案件一覧のCSVダウンロード
     @GetMapping(value = "/salesmanagement/download")
     public ResponseEntity<byte[]> downloadCsv() throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/csv;charset=shift_jis");
+        //ファイル名指定
         headers.setContentDispositionFormData("filename", "sms-order.csv");
         return new ResponseEntity<>(getCsvText().getBytes("shift_jis"), headers, HttpStatus.OK);
+    }
+
+    //顧客一覧画面
+    @GetMapping(value = "/salesmanagement/customer_list")
+    public String displayCustomerList(Model model) {
+    	List<Customer> customerList = salesManagementService.showCustomer();
+    	model.addAttribute("customerList", customerList);
+        return "salesmanagement/customer_list";
+    }
+
+    //顧客編集画面
+    @PostMapping(value = "/salesmanagement/customer_modify")
+    public String displayCustomerModify(Model model, @RequestParam(name = "customerId") int customerId) {
+    	Customer customer = salesManagementService.showSelectedCustomer(customerId);
+    	CustomerModifyForm customerModifyForm = new CustomerModifyForm();
+    	customerModifyForm.setCustomerId(customer.getCustomerId());
+    	customerModifyForm.setCustomerName(customer.getCustomerName());
+    	model.addAttribute("customerModifyForm", customerModifyForm);
+    	return "salesmanagement/customer_modify";
+    }
+
+    @PostMapping(value = "/salesmanagement/customer_modify_confirm")
+    public String checkCustomerModify(@ModelAttribute("customerModifyForm") @Validated CustomerModifyForm customerModifyForm, BindingResult result, Model model) {
+    	if(result.hasErrors()) {
+    		model.addAttribute("customerModifyForm", customerModifyForm);
+    		return "salesmanagement/customer_modify";
+    	}
+    	return "salesmanagement/customer_modify_confirm";
+    }
+
+    @PostMapping(value = "/salesmanagement/update_customer")
+    public String updateCustomer(@ModelAttribute("customerModifyForm") CustomerModifyForm customerModifyForm, Model model) {
+    	salesManagementService.updateCustomer(customerModifyForm);
+    	return "redirect:/salesmanagement/customer_list";
     }
 
     @GetMapping(value = { "/salesmanagement/order_list", "/salesmanagement" })
     public String displayOrderList(@ModelAttribute("orderSearchForm") OrderSearchForm orderSearchForm,
             @PageableDefault(page = 0, size = 10, sort = "orderCustomerId") Pageable pageable, Model model) {
-        /*OrderSearchForm自体はModel追加しなくてもエラー出ない？*/
-
-        /*
-         * ,
-            @RequestParam(name = "orderName", required = false) String orderName,
-            @RequestParam(name = "orderCustomerId", required = false) String orderCustomerId,
-            @RequestParam(name = "orderStatusId", required = false) String orderStatusId
-        */
 
         //Page<T> class, PageWrapper<T> class
         Page<Order> orderPage;
@@ -189,11 +216,6 @@ public class SalesManagementController {
         List<Status> statusList = salesManagementService.showStatus();
         model.addAttribute("statusList", statusList);
 
-        /*
-        //Order Entity List
-        List<Order> orderList = salesManagementService.showOrder();
-        model.addAttribute("orderList", orderList);
-        */
         return "salesmanagement/order_list";
     }
 
@@ -301,7 +323,6 @@ public class SalesManagementController {
         return "salesmanagement/order_modify";
     }
 
-    //405Error 修正対象箇所
     @RequestMapping(value = "/salesmanagement/order_modify_confirm", method = RequestMethod.POST)
     public String checkOrderModify(
             @ModelAttribute("orderModifyForm") @Validated(OrderModifyForm.All.class) OrderModifyForm orderModifyForm,
