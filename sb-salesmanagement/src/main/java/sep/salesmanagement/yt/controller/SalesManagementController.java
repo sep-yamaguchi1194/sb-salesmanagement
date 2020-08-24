@@ -131,6 +131,7 @@ public class SalesManagementController {
         return "salesmanagement/user_modify";
     }
 
+    //CSV作成メソッド
     public String getCsvText() throws JsonProcessingException {
         CsvMapper csvMapper = new CsvMapper();
         csvMapper.configure(CsvGenerator.Feature.ALWAYS_QUOTE_STRINGS, true);
@@ -150,7 +151,9 @@ public class SalesManagementController {
     @GetMapping(value = "/salesmanagement/download")
     public ResponseEntity<byte[]> downloadCsv() throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(getCsvText().getBytes("MS932"), headers, HttpStatus.OK);
+        headers.add("Content-Type", "text/csv;charset=shift_jis");
+        headers.setContentDispositionFormData("filename", "sms-order.csv");
+        return new ResponseEntity<>(getCsvText().getBytes("shift_jis"), headers, HttpStatus.OK);
     }
 
     @GetMapping(value = { "/salesmanagement/order_list", "/salesmanagement" })

@@ -22,11 +22,11 @@
       </div>
       <ul class="sms-menu">
         <li sec:authorize="hasRole('ROLE_ADMIN')" class="sms-menu-item"><a
-          th:href="@{/salesmanagement/user_create}">ユーザー新規登録</a>/</li>
+          th:href="@{/salesmanagement/user_create}">ユーザー新規登録[管理者用]</a>/</li>
         <li class="sms-menu-item"><a
           th:href="@{/salesmanagement/user_list}">ユーザー一覧</a>/</li>
         <li class="sms-menu-item"><a
-          th:href="@{/salesmanagement/download}">ダウンロード</a>/</li>
+          th:href="@{/salesmanagement/download}">ダウンロード[CSV形式]</a>/</li>
       </ul>
     </div>
   </header>
@@ -105,7 +105,7 @@
       <tr>
         <th>No.</th>
         <th>顧客</th>
-        <th class="th-address">受注日</th>
+        <th>受注日</th>
         <th>S番号</th>
         <th>件名</th>
         <th>数量</th>
