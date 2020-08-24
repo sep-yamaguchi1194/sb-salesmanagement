@@ -4,22 +4,15 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>製造部門売上管理システム：顧客情報編集</title>
+<title>製造部門売上管理システム：顧客登録</title>
 <link rel="stylesheet" href="/css/sb-salesmanagement.css">
 </head>
 <body>
-	<h1>製造部売上管理システム：顧客情報編集</h1>
+	<h1>製造部売上管理システム：顧客情報登録</h1>
 	<div class="container">
-		<form th:action="@{/salesmanagement/customer_modify_confirm}"
-			th:method="post" th:object="${customerModifyForm}">
-			<!--/* orderId, customerId as hidden */-->
-			<input id="customerId" type="hidden" th:field="*{customerId}">
+		<form th:action="@{/salesmanagement/customer_add_confirm}"
+			th:method="post" th:object="${customerAddForm}">
 			<table class="table-form">
-				<tr>
-					<th class="form-title">顧客ID</th>
-					<th class="form-required"></th>
-					<td th:text="*{customerId}"></td>
-				</tr>
 				<tr>
 					<th class="form-title">顧客名</th>
 					<th class="form-required">*</th>

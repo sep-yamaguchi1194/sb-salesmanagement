@@ -34,6 +34,7 @@ import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.entity.User;
+import sep.salesmanagement.yt.form.CustomerAddForm;
 import sep.salesmanagement.yt.form.CustomerModifyForm;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
@@ -83,6 +84,7 @@ public class SalesManagementController {
         return "salesmanagement/signup";
     }
 
+    //ユーザー新規作成
     @PostMapping(value = "/salesmanagement/signup_confirm")
     public String createNewAccount(@ModelAttribute(name = "signupForm") @Validated SignupForm signupForm,
             BindingResult result, Model model) {
@@ -102,6 +104,7 @@ public class SalesManagementController {
         return "salesmanagement/user_create";
     }
 
+    //ユーザー新規作成(管理者権限必須)
     @PostMapping(value = "/salesmanagement/user_create_confirm")
     public String createNewAccountAsAdmin(@ModelAttribute(name = "signupForm") @Validated SignupForm signupForm,
             BindingResult result, Model model) {
@@ -125,7 +128,8 @@ public class SalesManagementController {
     //ユーザー情報編集画面
     @GetMapping(value = "/salesmanagement/user_modify")
     public String displayUserModify(@AuthenticationPrincipal LoginUser loggedinUser, Model model) {
-        //UserModifyForm userModifyForm = new UserModifyForm(loggedinUser.getUser().getEmail());
+        UserModifyForm userModifyForm = new UserModifyForm(loggedinUser.getUser().getEmail());
+        model.addAttribute("userModifyForm", userModifyForm);
         return "salesmanagement/user_modify";
     }
     */
@@ -176,6 +180,7 @@ public class SalesManagementController {
     	return "salesmanagement/customer_modify";
     }
 
+    //顧客編集チェック
     @PostMapping(value = "/salesmanagement/customer_modify_confirm")
     public String checkCustomerModify(@ModelAttribute("customerModifyForm") @Validated CustomerModifyForm customerModifyForm, BindingResult result, Model model) {
     	if(result.hasErrors()) {
@@ -185,9 +190,34 @@ public class SalesManagementController {
     	return "salesmanagement/customer_modify_confirm";
     }
 
+    //顧客編集(UPDATE)処理
     @PostMapping(value = "/salesmanagement/update_customer")
     public String updateCustomer(@ModelAttribute("customerModifyForm") CustomerModifyForm customerModifyForm, Model model) {
     	salesManagementService.updateCustomer(customerModifyForm);
+    	return "redirect:/salesmanagement/customer_list";
+    }
+
+    //顧客新規登録画面
+    @GetMapping(value = "/salesmanagement/customer_add")
+    public String displayCustomerAdd(Model model) {
+    	CustomerAddForm customerAddForm = new CustomerAddForm();
+    	model.addAttribute("customerAddForm", customerAddForm);
+    	return "salesmanagement/customer_add";
+    }
+
+    //顧客新規登録チェック
+    @PostMapping(value = "/salesmanagement/customer_add_confirm")
+    public String checkCustomerAdd(@ModelAttribute("customerAddForm") @Validated CustomerAddForm customerAddForm, BindingResult result, Model model) {
+    	if(result.hasErrors()) {
+    		model.addAttribute("customerAddForm", customerAddForm);
+    		return "salesmanagement/customer_add";
+    	}
+    	return "salesmanagement/customer_add_confirm";
+    }
+
+    @PostMapping(value = "/salesmanagement/create_customer")
+    public String createCustomer(@ModelAttribute("customerAddForm") CustomerAddForm customerAddForm, Model model) {
+    	salesManagementService.createCustomer(customerAddForm);
     	return "redirect:/salesmanagement/customer_list";
     }
 

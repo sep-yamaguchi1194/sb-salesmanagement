@@ -10,6 +10,8 @@ import lombok.Data;
 
 @JsonPropertyOrder({ "顧客名", "受注日", "S番号", "案件名", "数量", "単位",
         "納入指定日", "納入日", "請求日", "見積金額", "受注金額", "ステータス名", "備考" })
+
+//CSV形式用案件Entity
 @Data
 public class CsvOrder {
     @JsonProperty("顧客名")

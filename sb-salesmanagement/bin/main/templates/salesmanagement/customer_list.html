@@ -9,6 +9,8 @@
 </head>
 <body>
 	<h1>製造部売上管理システム：顧客一覧</h1>
+	<button class="add"
+		onclick="location.href='/salesmanagement/customer_add'">顧客新規登録</button>
 	<table class="table-customer-list">
 		<thead>
 			<tr>
@@ -25,8 +27,7 @@
 						method="post">
 						<input name="customerId" type="hidden" th:value="*{customerId}">
 						<input type="submit" value="編集" class="btn">
-					</form>
-				</td>
+					</form></td>
 			</tr>
 		</tbody>
 	</table>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>製造部門売上管理システム：顧客登録(確認)</title>
+<link rel="stylesheet" href="/css/sb-salesmanagement.css">
+</head>
+<body>
+<h1>製造部売上管理システム：顧客登録(確認)</h1>
+ <div class="container">
+    <table class="table-confirm" th:object="${customerAddForm}">
+      <tr>
+        <th class="confirm-title">顧客名</th>
+        <th class="confirm-required">*</th>
+        <td th:text="*{customerName}"></td>
+      </tr>
+      <tr>
+    </table>
+    <form th:action="@{/salesmanagement/create_customer}"
+      th:object="${customerAddForm}" th:method="post">
+      <input id="customerName" name="customerName" th:field="*{customerName}" type="hidden">
+      <div class="btn-area-center">
+        <input type="submit" value="確認" class="btn"> <input
+          class="back" type="button" value="戻る" onclick="history.back();">
+      </div>
+    </form>
+  </div>
+</body>
+</html>

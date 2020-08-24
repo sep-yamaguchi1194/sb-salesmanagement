@@ -22,6 +22,7 @@ import sep.salesmanagement.yt.entity.Customer;
 import sep.salesmanagement.yt.entity.Order;
 import sep.salesmanagement.yt.entity.Status;
 import sep.salesmanagement.yt.entity.User;
+import sep.salesmanagement.yt.form.CustomerAddForm;
 import sep.salesmanagement.yt.form.CustomerModifyForm;
 import sep.salesmanagement.yt.form.OrderAddForm;
 import sep.salesmanagement.yt.form.OrderModifyForm;
@@ -176,6 +177,12 @@ public class SalesManagementService {
         order.setOrderStatusId(orderModifyForm.getStatusId());
         order.setOrderRemarks(orderModifyForm.getOrderRemarks());
         orderRepository.saveAndFlush(order);
+    }
+
+    public void createCustomer(CustomerAddForm customerAddForm) {
+    	Customer customer = new Customer();
+    	customer.setCustomerName(customerAddForm.getCustomerName());
+    	customerRepository.save(customer);
     }
 
     public void updateCustomer(CustomerModifyForm customerModifyForm) {
