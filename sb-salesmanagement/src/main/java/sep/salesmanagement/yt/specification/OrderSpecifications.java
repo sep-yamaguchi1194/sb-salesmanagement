@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import sep.salesmanagement.yt.entity.Order;
 
 public class OrderSpecifications {
+	//案件名
     public Specification<Order> orderNameContains(String orderName) {
         return StringUtils.isEmpty(orderName) ? null : new Specification<Order>() {
             @Override
@@ -20,6 +21,7 @@ public class OrderSpecifications {
         };
     }
 
+    //顧客ID
     public Specification<Order> orderCustomerIdEquals(int orderCustomerId) {
         return StringUtils.isEmpty(orderCustomerId) ? null : new Specification<Order>() {
             @Override
@@ -29,6 +31,7 @@ public class OrderSpecifications {
         };
     }
 
+    //案件ステータスID
     public Specification<Order> orderStatusIdEquals(String orderStatusId) {
         return StringUtils.isEmpty(orderStatusId) ? null : new Specification<Order>() {
             @Override
